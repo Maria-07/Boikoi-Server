@@ -3,6 +3,7 @@ import cors from 'cors';
 import ApiError from './errors/ApiError';
 import httpStatus from 'http-status';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
+import routes from './app/routes';
 
 const app: Application = express();
 
@@ -16,6 +17,8 @@ app.get('/', () => {
   //   console.log('this is cow hut');
   throw new ApiError(httpStatus.BAD_REQUEST, 'User not found throw error');
 });
+
+app.use('/api/v1/', routes);
 
 // global error handler
 app.use(globalErrorHandler);
