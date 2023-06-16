@@ -94,7 +94,21 @@ const getAllUsers = async (
   };
 };
 
+// get a single user
+const getSingleUser = async (id: string): Promise<IUser | null> => {
+  const result = await User.findById(id);
+  return result;
+};
+
+// Delete User
+const deleteUser = async (id: string): Promise<IUser | null> => {
+  const result = await User.findByIdAndDelete({ _id: id }, { new: true });
+  return result;
+};
+
 export const UserService = {
   createUser,
   getAllUsers,
+  getSingleUser,
+  deleteUser,
 };
