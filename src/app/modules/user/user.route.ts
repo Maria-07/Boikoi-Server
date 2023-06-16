@@ -9,6 +9,9 @@ router.get('/', UserController.getAllUsers);
 // get single User
 router.get('/:id', UserController.getSingleUser);
 
+// get User updated
+router.patch('/:id', UserController.updateUser);
+
 // delete a User
 router.delete('/:id', UserController.deleteUser);
 

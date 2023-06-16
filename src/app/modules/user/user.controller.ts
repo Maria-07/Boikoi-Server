@@ -8,10 +8,10 @@ import { userSearchableFields } from '../../../constance/searchableFields';
 import { paginationFields } from '../../../constance/paginationC';
 import { IUser } from './user.interface';
 
+// get create user
 const createUser: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { ...user } = req.body;
-    console.log(user);
 
     const result = await UserService.createUser(user);
 
@@ -38,6 +38,21 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
     message: 'Users retrieved successfully',
     meta: result.meta,
     data: result.data,
+  });
+});
+
+// Update User
+const updateUser = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const updatedData = req.body;
+
+  const result = await UserService.updatedUser(id, updatedData);
+
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User updated successfully',
+    data: result,
   });
 });
 
@@ -73,5 +88,6 @@ export const UserController = {
   createUser,
   getAllUsers,
   getSingleUser,
+  updateUser,
   deleteUser,
 };
