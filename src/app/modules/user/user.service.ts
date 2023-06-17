@@ -16,7 +16,7 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
     session.startTransaction();
 
     if (user.role === 'seller') {
-      if (!user.budget) {
+      if (!user.budget || user.budget) {
         user.budget = 0;
       } else {
         throw new ApiError(
@@ -25,14 +25,14 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
         );
       }
 
-      if (!user.income) {
-        throw new ApiError(
-          httpStatus.BAD_REQUEST,
-          'Seller Must need to have income'
-        );
-      }
+      // if (!user.income) {
+      //   throw new ApiError(
+      //     httpStatus.BAD_REQUEST,
+      //     'Seller Must need to have income'
+      //   );
+      // }
     } else {
-      if (!user.income) {
+      if (!user.income || user.income) {
         user.income = 0;
       } else {
         throw new ApiError(
@@ -41,12 +41,12 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
         );
       }
 
-      if (!user.budget) {
-        throw new ApiError(
-          httpStatus.BAD_REQUEST,
-          'Buyer Must need to have Budget'
-        );
-      }
+      // if (!user.budget) {
+      //   throw new ApiError(
+      //     httpStatus.BAD_REQUEST,
+      //     'Buyer Must need to have Budget'
+      //   );
+      // }
     }
 
     const newUser = await User.create([user], { session });

@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cowSearchableFields = void 0;
-exports.cowSearchableFields = [
+exports.cowFilterableFields = void 0;
+exports.cowFilterableFields = [
     'searchTerm',
     'name',
-    // 'price',
+    'price',
     'location',
     'breed',
     'category',
-    // 'age',
-    // 'weight',
+    'age',
+    'weight',
     'label',
 ];
