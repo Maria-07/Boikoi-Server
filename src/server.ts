@@ -19,6 +19,18 @@ async function bootstrap() {
   } catch (err) {
     console.log('Failed to connect Database');
   }
+  process.on('unhandledRejection', error => {
+    console.log('unhandledRejection is detected, we are closing our server');
+
+    if (server) {
+      server.close(() => {
+        console.log(error);
+        process.exit(1);
+      });
+    } else {
+      process.exit(1);
+    }
+  });
 }
 
 bootstrap();

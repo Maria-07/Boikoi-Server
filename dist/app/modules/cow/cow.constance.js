@@ -1,5 +1,5 @@
+"use strict";
 // import { IBreed, ICategory, ILabel, ILocation } from './cow.interface';
-
 // export const Location: ILocation[] = [
 //   'Dhaka',
 //   'Chattogram',
@@ -10,7 +10,6 @@
 //   'Rangpur',
 //   'Mymensingh',
 // ];
-
 // export const Breed: IBreed[] = [
 //   'Brahman',
 //   'Nellore',
@@ -20,6 +19,5 @@
 //   'Tharparkar',
 //   'Kankrej',
 // ];
-
 // export const Label: ILabel[] = ['for sale', 'sold out'];
 // export const Category: ICategory[] = ['Dairy', 'Beef', 'Dual Purpose'];

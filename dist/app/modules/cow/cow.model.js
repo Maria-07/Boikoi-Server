@@ -1,7 +1,7 @@
+"use strict";
 // import { Schema, model } from 'mongoose';
 // import { CowModel, ICow } from './cow.interface';
 // import { Location } from './cow.constance';
-
 // const CowSchema: Schema<ICow> = new Schema<ICow>({
 //   name: { type: String, required: true },
 //   age: { type: Number, required: true },
@@ -23,5 +23,4 @@
 //   //     ref: 'User',
 //   //   },
 // });
-
 // export const Cow = model<ICow, CowModel>('Cow', CowSchema);
