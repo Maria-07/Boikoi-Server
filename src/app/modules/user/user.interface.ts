@@ -19,8 +19,7 @@ export type UserModel = Model<IUser, Record<string, unknown>>;
 
 export type IUserFilters = {
   searchTerm?: string;
-  id?: string;
   role?: string;
   phoneNumber?: string;
-  budget?: string;
+  budget?: number;
 };

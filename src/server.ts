@@ -4,7 +4,7 @@ import { Server } from 'http';
 import app from './app';
 
 const uri = config.database_url as string;
-console.log(uri);
+// console.log(uri);
 
 let server: Server;
 

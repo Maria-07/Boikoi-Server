@@ -5,3 +5,10 @@ export const userSearchableFields = [
   'name.middleName',
   'budget',
 ];
+export const cowSearchableFields = [
+  'price',
+  'location',
+  'breed',
+  'category',
+  'age',
+];

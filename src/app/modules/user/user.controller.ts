@@ -8,7 +8,7 @@ import { userSearchableFields } from '../../../constance/searchableFields';
 import { paginationFields } from '../../../constance/paginationC';
 import { IUser } from './user.interface';
 
-// get create user
+// create user
 const createUser: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { ...user } = req.body;
