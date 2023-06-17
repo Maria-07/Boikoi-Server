@@ -1,5 +1,5 @@
 import mongoose, { SortOrder } from 'mongoose';
-import { User } from '../user/user.model';
+// import { User } from '../user/user.model';
 import { ICow, ICowFilter } from './cow.interface';
 import { Cow } from './cow.model';
 import ApiError from '../../../errors/ApiError';
@@ -13,8 +13,8 @@ import { paginationHelpers } from '../../../helpers/paginationHelpers';
 
 // create a cow
 const createCow = async (cow: ICow): Promise<ICow | null> => {
-  const sellerDetails = await User.findById(cow.seller);
-  console.log(sellerDetails);
+  // const sellerDetails = await User.findById(cow.seller);
+  // console.log(sellerDetails);
 
   let newCowAllData = null;
 
@@ -65,7 +65,7 @@ const getAllCow = async (
     });
   }
 
-  console.log(minPrice, maxPrice);
+  // console.log(minPrice, maxPrice);
 
   if (minPrice !== undefined && maxPrice !== undefined) {
     andCondition.push({
@@ -98,7 +98,7 @@ const getAllCow = async (
   console.log(whereCondition);
 
   const result = await Cow.find(whereCondition)
-    // .populate('User')
+    .populate('seller')
     .sort(sortConditions)
     .skip(skip)
     .limit(limit);
