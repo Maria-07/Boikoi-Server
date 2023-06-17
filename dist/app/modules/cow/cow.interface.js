@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 // import { Model, Types } from 'mongoose';
 // import { IUser } from '../user/user.interface';
 // export type ILocation =

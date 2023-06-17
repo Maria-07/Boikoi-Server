@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 // import { Schema, model } from 'mongoose';
 // import { CowModel, ICow } from './cow.interface';
 // import { Location } from './cow.constance';
