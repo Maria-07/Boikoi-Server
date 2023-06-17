@@ -50,7 +50,7 @@ const getAllCow = async (
   filters: ICowFilter,
   paginationOption: IPaginationOption
 ): Promise<IGenericResponse<ICow[]>> => {
-  const { searchTerm, minPrice, maxPrice, ...filtersData } = filters;
+  const { searchTerm, ...filtersData } = filters;
 
   const andCondition = [];
 
@@ -67,14 +67,14 @@ const getAllCow = async (
 
   // console.log(minPrice, maxPrice);
 
-  if (minPrice !== undefined && maxPrice !== undefined) {
-    andCondition.push({
-      price: {
-        $gte: minPrice,
-        $lte: maxPrice,
-      },
-    });
-  }
+  // if (minPrice !== undefined && maxPrice !== undefined) {
+  //   andCondition.push({
+  //     price: {
+  //       $gte: minPrice,
+  //       $lte: maxPrice,
+  //     },
+  //   });
+  // }
 
   if (Object.keys(filtersData).length) {
     andCondition.push({
@@ -94,8 +94,6 @@ const getAllCow = async (
   }
 
   const whereCondition = andCondition.length > 0 ? { $and: andCondition } : {};
-
-  console.log(whereCondition);
 
   const result = await Cow.find(whereCondition)
     .populate('seller')

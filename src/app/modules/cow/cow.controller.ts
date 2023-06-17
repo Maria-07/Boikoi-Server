@@ -23,11 +23,12 @@ const createCow: RequestHandler = catchAsync(
   }
 );
 
-// get all user [search and filter]
+// get all cow [search and filter]
 const getAllCow = catchAsync(async (req: Request, res: Response) => {
-  const filters = pick(req.query, cowFilterableFields);
+  console.log('reqCow', req.query);
 
-  console.log('filters', filters);
+  const filters = pick(req.query, cowFilterableFields);
+  // console.log('filters ==== ', filters);
 
   const paginationOption = pick(req.query, paginationFields);
 

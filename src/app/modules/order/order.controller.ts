@@ -6,6 +6,7 @@ import { OrderService } from './order.services';
 import { IOrder } from './order.interface';
 import { Order } from './order.model';
 
+// create Order
 const createOrder: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { ...order } = req.body;
@@ -22,6 +23,7 @@ const createOrder: RequestHandler = catchAsync(
   }
 );
 
+// get Order
 const getOrder = catchAsync(async (req: Request, res: Response) => {
   const query = {};
   const result = await Order.find(query).populate('cow').populate('buyer');

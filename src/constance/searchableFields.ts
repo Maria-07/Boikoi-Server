@@ -1,14 +1,11 @@
-export const userSearchableFields = [
-  'phoneNumber',
-  'role',
-  'name.firstName',
-  'name.middleName',
-  'budget',
-];
 export const cowSearchableFields = [
-  'price',
+  'searchTerm',
+  'name',
+  // 'price',
   'location',
   'breed',
   'category',
-  'age',
+  // 'age',
+  // 'weight',
+  'label',
 ];

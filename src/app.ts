@@ -14,8 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req: Request, res: Response) => {
   console.log('this is cow hut');
-  res.send("'this is cow hut'");
-  // throw new ApiError(httpStatus.BAD_REQUEST, 'User not found throw error');
+  res.send('🐄🐄🐄🐄 WELCOME 🐮 TO DIGITAL COW HUT 🐄🐄🐄🐄');
 });
 
 app.use('/api/v1/', routes);

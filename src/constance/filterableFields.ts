@@ -1,10 +1,11 @@
 export const cowFilterableFields = [
   'searchTerm',
-  'maxPrice',
-  'minPrice',
+  'name',
   'price',
   'location',
   'breed',
   'category',
   'age',
+  'weight',
+  'label',
 ];

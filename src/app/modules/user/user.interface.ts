@@ -22,4 +22,5 @@ export type IUserFilters = {
   role?: string;
   phoneNumber?: string;
   budget?: number;
+  income?: number;
 };

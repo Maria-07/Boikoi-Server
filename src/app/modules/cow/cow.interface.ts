@@ -39,11 +39,11 @@ export type CowModel = Model<ICow, Record<string, unknown>>;
 
 export type ICowFilter = {
   searchTerm?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  // location?: string;
-  // age?: string;
-  // price?: string;
-  // category?: string;
-  // weight?: number;
+  name?: string;
+  location?: ILocation;
+  age?: number;
+  price?: number;
+  category?: ICategory;
+  weight?: number;
+  label?: ILabel;
 };
