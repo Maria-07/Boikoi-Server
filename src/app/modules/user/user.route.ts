@@ -3,7 +3,7 @@ import { UserController } from './user.controller';
 
 const router = express.Router();
 
-//get all students
+//get all Users
 router.get('/', UserController.getAllUsers);
 
 // get single User
