@@ -16,6 +16,10 @@ const createOrder = async (order: IOrder): Promise<IOrder | null> => {
   const CowDetails = await Cow.findById(order.cow);
   console.log('CowDetails', CowDetails);
 
+  if (BuyerDetails?.role !== 'buyer') {
+    throw new ApiError(httpStatus.NOT_FOUND, 'This user is not a buyer');
+  }
+
   if (!CowDetails || !BuyerDetails) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Buyer and Cow Id not founded');
   }
