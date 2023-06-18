@@ -25,8 +25,6 @@ const createCow: RequestHandler = catchAsync(
 
 // get all cow [search and filter]
 const getAllCow = catchAsync(async (req: Request, res: Response) => {
-  console.log('reqCow', req.query);
-
   const filters = pick(req.query, cowFilterableFields);
   // console.log('filters ==== ', filters);
 

@@ -1,14 +1,10 @@
 import { Schema, model } from 'mongoose';
 import { IUser, UserModel } from './user.interface';
 import { role } from './user.constance';
-import ApiError from '../../../errors/ApiError';
-import httpStatus from 'http-status';
-// import ApiError from '../../../errors/ApiError';
-// import httpStatus from 'http-status';
 
 const UserSchema: Schema<IUser> = new Schema<IUser>(
   {
-    phoneNumber: { type: String, required: true },
+    phoneNumber: { type: String, required: true, unique: true },
     role: { type: String, enum: role, required: true },
     password: { type: String, required: true },
     name: {
@@ -29,16 +25,5 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
     },
   }
 );
-
-UserSchema.pre('save', async function (next) {
-  const isExit = await User.findOne({
-    phoneNumber: this.phoneNumber,
-  });
-
-  if (isExit) {
-    throw new ApiError(httpStatus.CONFLICT, 'This User is already Exist ❗❗');
-  }
-  next();
-});
 
 export const User = model<IUser, UserModel>('User', UserSchema);

@@ -8,4 +8,6 @@ export const cowFilterableFields = [
   'age',
   'weight',
   'label',
+  'minPrice',
+  'maxPrice',
 ];

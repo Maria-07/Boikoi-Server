@@ -46,4 +46,6 @@ export type ICowFilter = {
   category?: ICategory;
   weight?: number;
   label?: ILabel;
+  minPrice?: number;
+  maxPrice?: number;
 };

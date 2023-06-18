@@ -10,11 +10,22 @@ import {
 } from '../../../interfaces/pagination';
 import { cowSearchableFields } from '../../../constance/searchableFields';
 import { paginationHelpers } from '../../../helpers/paginationHelpers';
+import { User } from '../user/user.model';
 
 // create a cow
 const createCow = async (cow: ICow): Promise<ICow | null> => {
-  // const sellerDetails = await User.findById(cow.seller);
-  // console.log(sellerDetails);
+  const sellerDetails = await User.findById(cow.seller);
+  console.log(sellerDetails);
+
+  if (sellerDetails) {
+    if (sellerDetails.role !== 'seller') {
+      throw new ApiError(httpStatus.NOT_FOUND, 'This is not a valid seller id');
+    }
+  }
+
+  if (cow.label) {
+    cow.label = 'for sale';
+  }
 
   let newCowAllData = null;
 
@@ -50,7 +61,7 @@ const getAllCow = async (
   filters: ICowFilter,
   paginationOption: IPaginationOption
 ): Promise<IGenericResponse<ICow[]>> => {
-  const { searchTerm, ...filtersData } = filters;
+  const { searchTerm, maxPrice, minPrice, ...filtersData } = filters;
 
   const andCondition = [];
 
@@ -65,16 +76,31 @@ const getAllCow = async (
     });
   }
 
-  // console.log(minPrice, maxPrice);
+  console.log(minPrice, maxPrice);
 
-  // if (minPrice !== undefined && maxPrice !== undefined) {
-  //   andCondition.push({
-  //     price: {
-  //       $gte: minPrice,
-  //       $lte: maxPrice,
-  //     },
-  //   });
-  // }
+  if (minPrice !== undefined) {
+    andCondition.push({
+      price: {
+        $gte: minPrice,
+      },
+    });
+  }
+  if (maxPrice !== undefined) {
+    andCondition.push({
+      price: {
+        $lte: maxPrice,
+      },
+    });
+  }
+
+  if (minPrice !== undefined && maxPrice !== undefined) {
+    andCondition.push({
+      price: {
+        $gte: minPrice,
+        $lte: maxPrice,
+      },
+    });
+  }
 
   if (Object.keys(filtersData).length) {
     andCondition.push({
@@ -115,7 +141,7 @@ const getAllCow = async (
 
 // get a single cow
 const getSingleCow = async (id: string): Promise<ICow | null> => {
-  const result = await Cow.findById(id);
+  const result = await Cow.findById(id).populate('seller');
   return result;
 };
 
@@ -126,7 +152,7 @@ const updateCow = async (
 ): Promise<ICow | null> => {
   const result = await Cow.findOneAndUpdate({ _id: id }, payload, {
     new: true,
-  });
+  }).populate('seller');
   return result;
 };
 
