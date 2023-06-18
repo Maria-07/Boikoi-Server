@@ -75,6 +75,14 @@ const getAllCow = async (
       })),
     });
   }
+  if (searchTerm) {
+    if (!isNaN(parseFloat(searchTerm))) {
+      // [field] = parseFloat(searchTerm);
+      // console.log(field);
+
+      console.log(searchTerm);
+    }
+  }
 
   console.log(minPrice, maxPrice);
 
