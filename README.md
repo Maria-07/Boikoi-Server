@@ -27,3 +27,8 @@ Cow Hut Backend deployed Server Link : https://cow-hut-backend-assignment.vercel
 - api/v1/cows?minPrice=20000&maxPrice=70000
 - api/v1/cows?location=Chattogram
 - api/v1/cows?searchTerm=Cha
+
+### Orders
+
+- api/v1/orders/ [POST]
+- api/v1/orders/ [GET]
