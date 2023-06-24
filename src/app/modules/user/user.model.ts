@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, model } from 'mongoose';
 import { IUser, UserModel } from './user.interface';
 import { role } from './user.constance';
 import bcrypt from 'bcrypt';
+import config from '../../../config';
 
 const UserSchema: Schema<IUser, UserModel> = new Schema<IUser>(
   {
     phoneNumber: { type: String, required: true, unique: true },
     role: { type: String, enum: role, required: true },
-    password: { type: String, required: true },
+    password: { type: String, required: true, select: 0 },
     name: {
       required: true,
       type: {
@@ -28,9 +30,12 @@ const UserSchema: Schema<IUser, UserModel> = new Schema<IUser>(
 );
 
 UserSchema.statics.isUserExist = async function (
-  id: string
+  phoneNumber: string
 ): Promise<Pick<IUser, 'phoneNumber' | 'role' | 'password'> | null> {
-  return await User.findOne({ id }, { phoneNumber: 1, role: 1, password: 1 });
+  return await User.findOne(
+    { phoneNumber },
+    { phoneNumber: 1, role: 1, password: 1 }
+  );
 };
 
 UserSchema.statics.isPasswordMatch = async function (
@@ -39,5 +44,16 @@ UserSchema.statics.isPasswordMatch = async function (
 ): Promise<boolean> {
   return await bcrypt.compare(givenPassword, savedPassword);
 };
+
+UserSchema.pre('save', async function (next) {
+  const user = this;
+
+  //hash password
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds)
+  );
+  next();
+});
 
 export const User = model<IUser, UserModel>('User', UserSchema);
