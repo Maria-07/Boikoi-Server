@@ -3,6 +3,7 @@ import { Request, RequestHandler, Response } from 'express';
 import sendResponse from '../../../shared/sendResponse';
 import httpStatus from 'http-status';
 import { AdminService } from './admin.service';
+import { IAdmin } from './admin.interface';
 
 // create user
 const createAdmin: RequestHandler = catchAsync(
@@ -11,7 +12,7 @@ const createAdmin: RequestHandler = catchAsync(
 
     const result = await AdminService.createAdmin(admin);
 
-    sendResponse(res, {
+    sendResponse<IAdmin>(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'Admin created successfully',
