@@ -9,6 +9,8 @@ import { User } from './user.model';
 // create user
 const createUser: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
+    console.log(req.cookies, 'cookie');
+
     const { ...user } = req.body;
 
     const result = await UserService.createUser(user);

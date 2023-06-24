@@ -4,6 +4,11 @@ import sendResponse from '../../../shared/sendResponse';
 import httpStatus from 'http-status';
 import { AdminService } from './admin.service';
 import { IAdmin } from './admin.interface';
+import config from '../../../config';
+import {
+  ILoginUserResponse,
+  IRefreshTokenResponse,
+} from '../auth/auth.interface';
 
 // create user
 const createAdmin: RequestHandler = catchAsync(
@@ -21,6 +26,52 @@ const createAdmin: RequestHandler = catchAsync(
   }
 );
 
+const loginUser = catchAsync(async (req: Request, res: Response) => {
+  const { ...loginData } = req.body;
+
+  const result = await AdminService.loginUser(loginData);
+  const { refreshToken, ...others } = result;
+
+  // set refresh token  in Cookie
+  const cookieOption = {
+    secure: config.env === 'production',
+    httpOnly: true,
+  };
+
+  res.cookie('refreshToken', refreshToken, cookieOption);
+
+  sendResponse<ILoginUserResponse>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'user logged in successfully',
+    data: others,
+  });
+});
+
+const refreshToken = catchAsync(async (req: Request, res: Response) => {
+  const { refreshToken } = req.cookies;
+  console.log('refresh token', refreshToken);
+
+  const result = await AdminService.refreshToken(refreshToken);
+
+  // set refresh token  in Cookie
+  const cookieOption = {
+    secure: config.env === 'production',
+    httpOnly: true,
+  };
+
+  res.cookie('refreshToken', refreshToken, cookieOption);
+
+  sendResponse<IRefreshTokenResponse>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'New access token generated successfully !',
+    data: result,
+  });
+});
+
 export const AdminController = {
   createAdmin,
+  loginUser,
+  refreshToken,
 };
