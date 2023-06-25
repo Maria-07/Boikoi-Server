@@ -11,6 +11,9 @@ import {
 import { cowSearchableFields } from '../../../constance/searchableFields';
 import { paginationHelpers } from '../../../helpers/paginationHelpers';
 import { User } from '../user/user.model';
+import { jwtHelpers } from '../../../helpers/jwtHelpers';
+import config from '../../../config';
+import { Secret } from 'jsonwebtoken';
 
 // create a cow
 const createCow = async (cow: ICow): Promise<ICow | null> => {
@@ -156,17 +159,93 @@ const getSingleCow = async (id: string): Promise<ICow | null> => {
 // updated Cow
 const updateCow = async (
   id: string,
-  payload: Partial<ICow>
+  payload: Partial<ICow>,
+  token: string
 ): Promise<ICow | null> => {
+  console.log(id, payload);
+  console.log('Token => 🔖🔖', token);
+
+  let verifiedToken = null;
+
+  try {
+    verifiedToken = jwtHelpers.verifyToken(
+      token as string,
+      config.jwt.secret as Secret
+    );
+  } catch (err) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
+  }
+
+  console.log('verifiedToken =======', verifiedToken);
+
+  const { phone, role } = verifiedToken;
+  console.log('PHONE 📞', phone);
+
+  const cowDetails = await Cow.findById(id);
+  console.log('cowDetails 🐮', cowDetails);
+
+  if (!cowDetails) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'This cow is invalid');
+  }
+
+  const sellerDetails = await User.findById(cowDetails?.seller);
+  console.log('👉👉👉👉👉👉sellerDetails', sellerDetails);
+
+  if (sellerDetails?.phoneNumber !== phone || sellerDetails?.role !== role) {
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      'This is not a valid seller id for this cow'
+    );
+  }
+
   const result = await Cow.findOneAndUpdate({ _id: id }, payload, {
     new: true,
   }).populate('seller');
+
+  console.log(result, 'updated result');
+
   return result;
 };
 
 // Delete Cow
-const deleteCow = async (id: string): Promise<ICow | null> => {
+const deleteCow = async (id: string, token: string): Promise<ICow | null> => {
+  console.log('Token => 🔖🔖', token);
+
+  let verifiedToken = null;
+
+  try {
+    verifiedToken = jwtHelpers.verifyToken(
+      token as string,
+      config.jwt.secret as Secret
+    );
+  } catch (err) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
+  }
+
+  console.log('verifiedToken =======', verifiedToken);
+
+  const { phone, role } = verifiedToken;
+  console.log('PHONE 📞', phone);
+
+  const cowDetails = await Cow.findById(id);
+  console.log('cowDetails 🐮', cowDetails);
+
+  if (!cowDetails) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'This cow is invalid');
+  }
+
+  const sellerDetails = await User.findById(cowDetails?.seller);
+  console.log('👉👉👉👉👉👉sellerDetails', sellerDetails);
+
+  if (sellerDetails?.phoneNumber !== phone || sellerDetails?.role !== role) {
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      'This is not a valid seller id for this cow'
+    );
+  }
   const result = await Cow.findByIdAndDelete({ _id: id }, { new: true });
+
+  console.log('Deleted Result 🗑️🗑️', result);
   return result;
 };
 

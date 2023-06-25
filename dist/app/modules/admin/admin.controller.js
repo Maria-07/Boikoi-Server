@@ -23,36 +23,59 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OrderController = void 0;
-const http_status_1 = __importDefault(require("http-status"));
+exports.AdminController = void 0;
 const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
-const order_services_1 = require("./order.services");
-const order_model_1 = require("./order.model");
-// create Order
-const createOrder = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const order = __rest(req.body, []);
-    console.log('order pro', order);
-    const result = yield order_services_1.OrderService.createOrder(order);
+const http_status_1 = __importDefault(require("http-status"));
+const admin_service_1 = require("./admin.service");
+const config_1 = __importDefault(require("../../../config"));
+// create user
+const createAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const admin = __rest(req.body, []);
+    const result = yield admin_service_1.AdminService.createAdmin(admin);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Order created successfully',
+        message: 'Admin created successfully',
         data: result,
     });
 }));
-// get Order
-const getOrder = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const query = {};
-    const result = yield order_model_1.Order.find(query).populate('cow').populate('buyer');
+const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const loginData = __rest(req.body, []);
+    const result = yield admin_service_1.AdminService.loginUser(loginData);
+    const { refreshToken } = result, others = __rest(result, ["refreshToken"]);
+    // set refresh token  in Cookie
+    const cookieOption = {
+        secure: config_1.default.env === 'production',
+        httpOnly: true,
+    };
+    res.cookie('refreshToken', refreshToken, cookieOption);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Order retrieved successfully',
+        message: 'user logged in successfully',
+        data: others,
+    });
+}));
+const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { refreshToken } = req.cookies;
+    console.log('refresh token', refreshToken);
+    const result = yield admin_service_1.AdminService.refreshToken(refreshToken);
+    // set refresh token  in Cookie
+    const cookieOption = {
+        secure: config_1.default.env === 'production',
+        httpOnly: true,
+    };
+    res.cookie('refreshToken', refreshToken, cookieOption);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'New access token generated successfully !',
         data: result,
     });
 }));
-exports.OrderController = {
-    createOrder,
-    getOrder,
+exports.AdminController = {
+    createAdmin,
+    loginUser,
+    refreshToken,
 };

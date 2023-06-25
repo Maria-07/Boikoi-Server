@@ -18,10 +18,20 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
     if (user.role === 'seller') {
       if (!user.budget || user.budget) {
         user.budget = 0;
+        user.income = 0;
       }
     } else {
       if (!user.income || user.income) {
         user.income = 0;
+      }
+    }
+
+    if (user.role === 'buyer') {
+      if (user.budget === 0) {
+        throw new ApiError(
+          httpStatus.BAD_REQUEST,
+          'Buyer must need some amount of Budget'
+        );
       }
     }
 

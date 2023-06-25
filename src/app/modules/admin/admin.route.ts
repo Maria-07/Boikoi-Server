@@ -18,4 +18,10 @@ router.post(
   AdminController.loginUser
 );
 
+router.post(
+  '/refresh-token',
+  validateRequest(AuthValidation.refreshTokenZodSchema),
+  AdminController.refreshToken
+);
+
 export const AdminRoutes = router;
