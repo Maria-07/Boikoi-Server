@@ -2,7 +2,7 @@
 import { Schema, model } from 'mongoose';
 import { IUser, UserModel } from './user.interface';
 import { role } from './user.constance';
-import bcrypt from 'bcrypt';
+import bcrypt, { hash } from 'bcrypt';
 import config from '../../../config';
 
 const UserSchema: Schema<IUser, UserModel> = new Schema<IUser>(
@@ -47,12 +47,13 @@ UserSchema.statics.isPasswordMatch = async function (
 
 UserSchema.pre('save', async function (next) {
   const user = this;
-
   //hash password
   user.password = await bcrypt.hash(
     user.password,
     Number(config.bcrypt_salt_rounds)
   );
+  console.log('password  and Hash 💡', this.password, hash);
+
   next();
 });
 

@@ -25,6 +25,9 @@ const createOrder: RequestHandler = catchAsync(
 
 // get Order
 const getOrder = catchAsync(async (req: Request, res: Response) => {
+  const token = req.headers.authorization;
+  console.log('Token => 🔖🔖', token);
+
   const query = {};
   const result = await Order.find(query).populate('cow').populate('buyer');
 

@@ -43,19 +43,26 @@ const createOrder = async (order: IOrder): Promise<IOrder | null> => {
   try {
     session.startTransaction();
 
-    // // Update the cow's label to 'sold out'
-    CowDetails.label = 'sold out';
-    await CowDetails.save({ session });
+    // Update the cow's label to 'sold out'
+    await Cow.updateOne(
+      { _id: CowDetails.id },
+      { $set: { label: 'sold out' } }
+    );
 
-    // // Deduct the cost of the cow from the buyer's budget
-    BuyerDetails.budget -= CowDetails.price;
-    await BuyerDetails.save({ session });
+    // Deduct the cost of the cow from the buyer's budget
+    const buyerBudgetUpdate = {
+      budget: BuyerDetails.budget - CowDetails.price,
+    };
 
-    // // Add the cost of the cow to the seller's income
+    await User.findOneAndUpdate({ _id: order.buyer }, buyerBudgetUpdate);
+
+    // Add the cost of the cow to the seller's income
     const sellerData = await User.findById(CowDetails.seller);
     if (sellerData) {
-      sellerData.income += CowDetails.price;
-      await sellerData.save({ session });
+      const sellerIncomeUpdate = {
+        income: sellerData?.income + CowDetails.price,
+      };
+      await User.findOneAndUpdate({ _id: sellerData?.id }, sellerIncomeUpdate);
     }
 
     const newOrder = await Order.create([order], { session });
