@@ -84,6 +84,17 @@ const createOrder = async (order: IOrder): Promise<IOrder | null> => {
   return newOrderAllData;
 };
 
+// get all services
+// const getAllOrder = async (token as string) => {
+//     console.log('Token => 🔖🔖', token);
+//   const result = await Order.find({}).populate('cow').populate('buyer');
+
+//   return {
+//     result,
+//   };
+// };
+
 export const OrderService = {
   createOrder,
+  // getAllOrder,
 };
