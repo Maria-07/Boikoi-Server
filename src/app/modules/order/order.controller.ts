@@ -54,15 +54,35 @@ const getOrder = catchAsync(async (req: Request, res: Response) => {
   // const cow = await Order.
 
   let query = {};
+  let result;
 
   if (role === 'buyer') {
     query = {
       buyer: id,
     };
+    result = await Order.find(query)
+      .populate('cow')
+      .populate('buyer')
+      .populate({
+        path: 'cow',
+        populate: {
+          path: 'seller',
+          model: 'User',
+        },
+      });
   }
 
   if (role === 'admin') {
-    query = {};
+    result = await Order.find({})
+      .populate('cow')
+      .populate('buyer')
+      .populate({
+        path: 'cow',
+        populate: {
+          path: 'seller',
+          model: 'User',
+        },
+      });
   }
 
   if (role === 'seller') {
@@ -71,16 +91,16 @@ const getOrder = catchAsync(async (req: Request, res: Response) => {
     };
   }
 
-  const result = await Order.find(query)
-    .populate('cow')
-    .populate('buyer')
-    .populate({
-      path: 'cow',
-      populate: {
-        path: 'seller',
-        model: 'User',
-      },
-    });
+  // const result = await Order.find(query)
+  //   .populate('cow')
+  //   .populate('buyer')
+  //   .populate({
+  //     path: 'cow',
+  //     populate: {
+  //       path: 'seller',
+  //       model: 'User',
+  //     },
+  //   });
   // console.log('R E S U  L T', result);
 
   sendResponse(res, {

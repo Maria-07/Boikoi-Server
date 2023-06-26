@@ -103,19 +103,17 @@ const getSingleOrder = async (
     throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
   }
   console.log('verifiedToken =======>', verifiedToken);
-
   const { phone, role } = verifiedToken;
 
   const user = await User.findOne({ phoneNumber: phone }, { _id: 1 });
   const userId = user?.id;
-
   console.log('User Id From token 👉', userId);
+  // ------------------------------------------------------token----------
 
   const order = await Order.findById(id);
 
   if (role === 'buyer') {
     const buyerID = order?.buyer.toString();
-
     console.log('Buyer ID = ', buyerID);
 
     if (buyerID !== userId) {
@@ -128,10 +126,9 @@ const getSingleOrder = async (
 
   if (role === 'seller') {
     const CowDetails = await Cow.findById(order?.cow);
-
     const SellerID = CowDetails?.seller.toString();
-
     console.log('Seller ID = ', SellerID);
+
     if (SellerID !== userId) {
       throw new ApiError(
         httpStatus.UNAUTHORIZED,
