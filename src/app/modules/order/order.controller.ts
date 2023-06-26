@@ -9,6 +9,7 @@ import config from '../../../config';
 import { Secret } from 'jsonwebtoken';
 import ApiError from '../../../errors/ApiError';
 import { User } from '../user/user.model';
+import { IOrder } from './order.interface';
 
 // create Order
 const createOrder: RequestHandler = catchAsync(
@@ -90,7 +91,23 @@ const getOrder = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// get a single Order
+const getSingleOrder = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const token = req.headers.authorization;
+
+  const result = await OrderService.getSingleOrder(id, token as string);
+
+  sendResponse<IOrder>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Order retrieved successfully',
+    data: result,
+  });
+});
+
 export const OrderController = {
   createOrder,
   getOrder,
+  getSingleOrder,
 };
