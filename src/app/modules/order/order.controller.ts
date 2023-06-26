@@ -10,12 +10,14 @@ import { Secret } from 'jsonwebtoken';
 import ApiError from '../../../errors/ApiError';
 import { User } from '../user/user.model';
 import { IOrder } from './order.interface';
+import { error } from 'winston';
+import { Cow } from '../cow/cow.model';
 
 // create Order
 const createOrder: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { ...order } = req.body;
-    console.log('order pro', order);
+    // console.log('order pro', order);
 
     const result = await OrderService.createOrder(order);
 
@@ -31,7 +33,7 @@ const createOrder: RequestHandler = catchAsync(
 // get Order
 const getOrder = catchAsync(async (req: Request, res: Response) => {
   const token = req.headers.authorization;
-  console.log('Token => 🔖🔖', token);
+  // console.log('Token => 🔖🔖', token);
 
   let verifiedToken = null;
 
@@ -43,12 +45,12 @@ const getOrder = catchAsync(async (req: Request, res: Response) => {
   } catch (err) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
   }
-  console.log('verifiedToken =======>', verifiedToken);
+  // console.log('verifiedToken =======>', verifiedToken);
 
   const { phone, role } = verifiedToken;
 
   const userId = await User.findOne({ phoneNumber: phone }, { _id: 1 });
-  console.log('userID 👥', userId?.id);
+  // console.log('userID 👥', userId?.id);
   const id = userId?.id;
 
   // const cow = await Order.
@@ -70,9 +72,21 @@ const getOrder = catchAsync(async (req: Request, res: Response) => {
           model: 'User',
         },
       });
-  }
+  } else if (role === 'seller') {
+    const CowList = await Cow.find({ seller: id }, { _id: 1 });
+    // console.log('CowDetails', CowList);
 
-  if (role === 'admin') {
+    const cowIdList = CowList.map(c => c._id);
+    // console.log('id======', cowIdList);
+
+    result = await Order.find({ cow: { $in: cowIdList } }).populate({
+      path: 'cow',
+      populate: {
+        path: 'seller',
+        model: 'User',
+      },
+    });
+  } else if (role === 'admin') {
     result = await Order.find({})
       .populate('cow')
       .populate('buyer')
@@ -83,25 +97,11 @@ const getOrder = catchAsync(async (req: Request, res: Response) => {
           model: 'User',
         },
       });
+  } else {
+    throw error;
   }
 
-  if (role === 'seller') {
-    query = {
-      'cow.seller.id': id,
-    };
-  }
-
-  // const result = await Order.find(query)
-  //   .populate('cow')
-  //   .populate('buyer')
-  //   .populate({
-  //     path: 'cow',
-  //     populate: {
-  //       path: 'seller',
-  //       model: 'User',
-  //     },
-  //   });
-  // console.log('R E S U  L T', result);
+  // console.log('Total Orders', result.length);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

@@ -11,13 +11,13 @@ import { Secret } from 'jsonwebtoken';
 
 // create a Order
 const createOrder = async (order: IOrder): Promise<IOrder | null> => {
-  console.log('order = ', order);
+  // console.log('order = ', order);
 
   const BuyerDetails = await User.findById(order.buyer);
-  console.log('BuyerDetails', BuyerDetails);
+  // console.log('BuyerDetails', BuyerDetails);
 
   const CowDetails = await Cow.findById(order.cow);
-  console.log('CowDetails', CowDetails);
+  // console.log('CowDetails', CowDetails);
 
   if (BuyerDetails?.role !== 'buyer') {
     throw new ApiError(httpStatus.NOT_FOUND, 'This user is not a buyer');
@@ -92,7 +92,7 @@ const getSingleOrder = async (
   id: string,
   token: string
 ): Promise<IOrder | null> => {
-  console.log('Token => 🔖🔖', token);
+  // console.log('Token => 🔖🔖', token);
   let verifiedToken = null;
   try {
     verifiedToken = jwtHelpers.verifyToken(
@@ -102,19 +102,19 @@ const getSingleOrder = async (
   } catch (err) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
   }
-  console.log('verifiedToken =======>', verifiedToken);
+  // console.log('verifiedToken =======>', verifiedToken);
   const { phone, role } = verifiedToken;
 
   const user = await User.findOne({ phoneNumber: phone }, { _id: 1 });
   const userId = user?.id;
-  console.log('User Id From token 👉', userId);
+  // console.log('User Id From token 👉', userId);
   // ------------------------------------------------------token----------
 
   const order = await Order.findById(id);
 
   if (role === 'buyer') {
     const buyerID = order?.buyer.toString();
-    console.log('Buyer ID = ', buyerID);
+    // console.log('Buyer ID = ', buyerID);
 
     if (buyerID !== userId) {
       throw new ApiError(
@@ -127,7 +127,7 @@ const getSingleOrder = async (
   if (role === 'seller') {
     const CowDetails = await Cow.findById(order?.cow);
     const SellerID = CowDetails?.seller.toString();
-    console.log('Seller ID = ', SellerID);
+    // console.log('Seller ID = ', SellerID);
 
     if (SellerID !== userId) {
       throw new ApiError(

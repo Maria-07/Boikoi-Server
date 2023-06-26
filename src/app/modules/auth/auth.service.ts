@@ -13,10 +13,10 @@ import { Secret } from 'jsonwebtoken';
 const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   const { phoneNumber, password } = payload;
 
-  console.log(payload);
+  // console.log(payload);
 
   const isUserExist = await User.isUserExist(phoneNumber);
-  console.log('isisUserExist', isUserExist);
+  // console.log('isisUserExist', isUserExist);
 
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
@@ -69,10 +69,10 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   }
 
   const { phone } = verifiedToken;
-  console.log('verifiedToken', verifiedToken);
+  // console.log('verifiedToken', verifiedToken);
 
   const isUserExist = await User.isUserExist(phone);
-  console.log('isUserExist', isUserExist);
+  // console.log('isUserExist', isUserExist);
 
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');

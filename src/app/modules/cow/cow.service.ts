@@ -18,7 +18,7 @@ import { Secret } from 'jsonwebtoken';
 // create a cow
 const createCow = async (cow: ICow): Promise<ICow | null> => {
   const sellerDetails = await User.findById(cow.seller);
-  console.log(sellerDetails);
+  // console.log(sellerDetails);
 
   if (sellerDetails) {
     if (sellerDetails.role !== 'seller') {
@@ -82,12 +82,11 @@ const getAllCow = async (
     if (!isNaN(parseFloat(searchTerm))) {
       // [field] = parseFloat(searchTerm);
       // console.log(field);
-
-      console.log(searchTerm);
+      // console.log(searchTerm);
     }
   }
 
-  console.log(minPrice, maxPrice);
+  // console.log(minPrice, maxPrice);
 
   if (minPrice !== undefined) {
     andCondition.push({
@@ -162,8 +161,8 @@ const updateCow = async (
   payload: Partial<ICow>,
   token: string
 ): Promise<ICow | null> => {
-  console.log(id, payload);
-  console.log('Token => 🔖🔖', token);
+  // console.log(id, payload);
+  // console.log('Token => 🔖🔖', token);
 
   let verifiedToken = null;
 
@@ -176,20 +175,20 @@ const updateCow = async (
     throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
   }
 
-  console.log('verifiedToken =======', verifiedToken);
+  // console.log('verifiedToken =======', verifiedToken);
 
   const { phone, role } = verifiedToken;
-  console.log('PHONE 📞', phone);
+  // console.log('PHONE 📞', phone);
 
   const cowDetails = await Cow.findById(id);
-  console.log('cowDetails 🐮', cowDetails);
+  // console.log('cowDetails 🐮', cowDetails);
 
   if (!cowDetails) {
     throw new ApiError(httpStatus.NOT_FOUND, 'This cow is invalid');
   }
 
   const sellerDetails = await User.findById(cowDetails?.seller);
-  console.log('👉👉👉👉👉👉sellerDetails', sellerDetails);
+  // console.log('👉👉👉👉👉👉sellerDetails', sellerDetails);
 
   if (sellerDetails?.phoneNumber !== phone || sellerDetails?.role !== role) {
     throw new ApiError(
@@ -202,14 +201,14 @@ const updateCow = async (
     new: true,
   }).populate('seller');
 
-  console.log(result, 'updated result');
+  // console.log(result, 'updated result');
 
   return result;
 };
 
 // Delete Cow
 const deleteCow = async (id: string, token: string): Promise<ICow | null> => {
-  console.log('Token => 🔖🔖', token);
+  // console.log('Token => 🔖🔖', token);
 
   let verifiedToken = null;
 
@@ -222,20 +221,20 @@ const deleteCow = async (id: string, token: string): Promise<ICow | null> => {
     throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
   }
 
-  console.log('verifiedToken =======', verifiedToken);
+  // console.log('verifiedToken =======', verifiedToken);
 
   const { phone, role } = verifiedToken;
-  console.log('PHONE 📞', phone);
+  // console.log('PHONE 📞', phone);
 
   const cowDetails = await Cow.findById(id);
-  console.log('cowDetails 🐮', cowDetails);
+  // console.log('cowDetails 🐮', cowDetails);
 
   if (!cowDetails) {
     throw new ApiError(httpStatus.NOT_FOUND, 'This cow is invalid');
   }
 
   const sellerDetails = await User.findById(cowDetails?.seller);
-  console.log('👉👉👉👉👉👉sellerDetails', sellerDetails);
+  // console.log('👉👉👉👉👉👉sellerDetails', sellerDetails);
 
   if (sellerDetails?.phoneNumber !== phone || sellerDetails?.role !== role) {
     throw new ApiError(
@@ -245,7 +244,7 @@ const deleteCow = async (id: string, token: string): Promise<ICow | null> => {
   }
   const result = await Cow.findByIdAndDelete({ _id: id }, { new: true });
 
-  console.log('Deleted Result 🗑️🗑️', result);
+  // console.log('Deleted Result 🗑️🗑️', result);
   return result;
 };
 
