@@ -1,36 +1,69 @@
-# Digital Cow Hut Backend Assignment
+## Cow Hut Backend deployed Auth Server Link:
 
-Cow Hut Backend deployed Server Link : https://cow-hut-backend-assignment.vercel.app/
+https://digital-cow-hut-auth.vercel.app/
 
-## Application Routes:
+# Application Routes:
 
-### Users
+## Main part
 
-- /api/v1/auth/sign-up [POST]
-- /api/v1/users/ [GET]
-- api/v1/users/648e8fbe447eaf18315e0938 [Single GET]
-- api/v1/users/648e8fbe447eaf18315e0938 [PATCH]
-- api/v1/users/648da4aa5816aad3806c0276 [DELETE]
+### Auth (User)
+
+| API End Point                                                     | METHOD | Description                                                 |
+| :---------------------------------------------------------------- | :----- | :---------------------------------------------------------- |
+| https://digital-cow-hut-auth.vercel.app/api/v1/auth/login         | POST   | User can login by phoneNumber and password                  |
+| https://digital-cow-hut-auth.vercel.app/api/v1/auth/sign-up       | POST   | User can create a account, User can be Buyer or Seller only |
+| https://digital-cow-hut-auth.vercel.app/api/v1/auth/refresh-token | POST   | Create a refresh token                                      |
+
+### Auth (Admin)
+
+| API End Point                                                      | METHOD | Description                                  |
+| :----------------------------------------------------------------- | :----- | :------------------------------------------- |
+| https://digital-cow-hut-auth.vercel.app/api/v1/admins/create-admin | POST   | Admin can create an admin account            |
+| https://digital-cow-hut-auth.vercel.app/api/v1/admins/login        | POST   | Admin can log in by phoneNumber and password |
+
+### User
+
+| API End Point                                                                 | METHOD | Description                         |
+| :---------------------------------------------------------------------------- | :----- | :---------------------------------- |
+| https://digital-cow-hut-auth.vercel.app/api/v1/users                          | GET    | Admin can Get all Users             |
+| https://digital-cow-hut-auth.vercel.app/api/v1/users/64980d217b027785ff6681ce | GET    | Single User Get, only Admin can get |
+| https://digital-cow-hut-auth.vercel.app/api/v1/users/6497a501a2fda5f1ec3e12b4 | PATCH  | Only Admin can Update a user        |
+| https://digital-cow-hut-auth.vercel.app/api/v1/users/64993d8665e3699afc986ff4 | DELETE | Only Admin can DELETE a user        |
 
 ### Cows
 
-- api/v1/cows [POST]
-- api/v1/cows [GET]
-- api/v1/cows/648eab5ab5df68c50240f7f7 [Single GET]
-- api/v1/cows/648eab5ab5df68c50240f7f7 [PATCH]
-- api/v1/cows/648e8df1655be9e3e66a323e [DELETE]
-
-### Pagination and Filtering routes of Cows
-
-- api/v1/cows?page=1&limit=10
-- api/v1/cows?sortBy=price&sortOrder=asc
-- api/v1/cows?minPrice=20000&maxPrice=70000
-- api/v1/cows?location=Chattogram
-- api/v1/cows?searchTerm=Cha
+| API End Point                                                                | METHOD | Description                                  |
+| :--------------------------------------------------------------------------- | :----- | :------------------------------------------- |
+| https://digital-cow-hut-auth.vercel.app/api/v1/cows                          | POST   | Only Seller can create a cow                 |
+| https://digital-cow-hut-auth.vercel.app/api/v1/cows                          | GET    | All User can get cows                        |
+| https://digital-cow-hut-auth.vercel.app/api/v1/cows/6499400e65e3699afc987002 | GET    | Single Cow Get, All Users can get            |
+| https://digital-cow-hut-auth.vercel.app/api/v1/cows/6499400e65e3699afc987002 | PATCH  | Only The seller of that cow can Update a cow |
+| https://digital-cow-hut-auth.vercel.app/api/v1/cows/649940a165e3699afc987005 | DELETE | Only The seller of that cow can DELETE a cow |
 
 ### Orders
 
-- api/v1/orders/ [POST]
-- api/v1/orders/ [GET]
+| API End Point                                         | METHOD | Description                                                       |
+| :---------------------------------------------------- | :----- | :---------------------------------------------------------------- |
+| https://digital-cow-hut-auth.vercel.app/api/v1/orders | POST   | Only buyer can order a cow                                        |
+| https://digital-cow-hut-auth.vercel.app/api/v1/orders | GET    | admin, by the specific buyer of this order & seller of this order |
 
-Starting assignment 4
+## Bonus Part
+
+### Admin
+
+| API End Point                                                      | METHOD | Description                       |
+| :----------------------------------------------------------------- | :----- | :-------------------------------- |
+| https://digital-cow-hut-auth.vercel.app/api/v1/admins/create-admin | POST   | Admin can create an admin account |
+
+### My Profile
+
+| API End Point                                                   | METHOD | Description     |
+| :-------------------------------------------------------------- | :----- | :-------------- |
+| https://digital-cow-hut-auth.vercel.app/api/v1/users/my-profile | GET    | User Can Access |
+| https://digital-cow-hut-auth.vercel.app/api/v1/users/my-profile | PATCH  | User Can Access |
+
+### Orders
+
+| API End Point                                                                  | METHOD | Description                                                       |
+| :----------------------------------------------------------------------------- | :----- | :---------------------------------------------------------------- |
+| https://digital-cow-hut-auth.vercel.app/api/v1/orders/649944e565e3699afc98703c | GET    | admin, by the specific buyer of this order & seller of this order |
