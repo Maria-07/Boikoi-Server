@@ -10,7 +10,7 @@ import {
   IRefreshTokenResponse,
 } from '../auth/auth.interface';
 
-// create user
+// create Admin
 const createAdmin: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { ...admin } = req.body;
@@ -26,6 +26,7 @@ const createAdmin: RequestHandler = catchAsync(
   }
 );
 
+// loginAdmin
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
 
@@ -43,11 +44,12 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   sendResponse<ILoginUserResponse>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'user logged in successfully',
+    message: 'Admin logged in successfully',
     data: others,
   });
 });
 
+// admin refreshToken
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
   console.log('refresh token', refreshToken);

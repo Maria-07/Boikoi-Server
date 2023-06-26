@@ -5,6 +5,7 @@ import sendResponse from '../../../shared/sendResponse';
 import { UserService } from './user.service';
 import { IUser } from './user.interface';
 import { User } from './user.model';
+import { IAdmin } from '../admin/admin.interface';
 
 // create user
 const createUser: RequestHandler = catchAsync(
@@ -79,10 +80,44 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// Get Profile Data
+const getMyProfile = catchAsync(async (req: Request, res: Response) => {
+  const token = req.headers.authorization;
+
+  const result = await UserService.getMyProfile(token as string);
+
+  sendResponse<IUser | IAdmin>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Users information retrieved successfully',
+    data: result,
+  });
+});
+
+// update my profile
+const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
+  const updatedData = req.body;
+  const token = req.headers.authorization;
+
+  const result = await UserService.updateMyProfile(
+    updatedData,
+    token as string
+  );
+
+  sendResponse<IUser | IAdmin>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Users information updated successfully',
+    data: result,
+  });
+});
+
 export const UserController = {
   createUser,
   getAllUsers,
   getSingleUser,
   updateUser,
   deleteUser,
+  getMyProfile,
+  updateMyProfile,
 };

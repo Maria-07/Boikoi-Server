@@ -3,6 +3,11 @@ import { IUser } from './user.interface';
 import { User } from './user.model';
 import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
+import { jwtHelpers } from '../../../helpers/jwtHelpers';
+import config from '../../../config';
+import { Secret } from 'jsonwebtoken';
+import { Admin } from '../admin/admin.model';
+import { IAdmin } from '../admin/admin.interface';
 
 // create a user through sign in
 const createUser = async (user: IUser): Promise<IUser | null> => {
@@ -96,9 +101,102 @@ const deleteUser = async (id: string): Promise<IUser | null> => {
   return result;
 };
 
+// Get Profile Data
+const getMyProfile = async (token: string): Promise<IUser | IAdmin | null> => {
+  console.log('Token => 🔖🔖', token);
+
+  let verifiedToken = null;
+
+  try {
+    verifiedToken = jwtHelpers.verifyToken(
+      token as string,
+      config.jwt.secret as Secret
+    );
+  } catch (err) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
+  }
+
+  console.log('verifiedToken =======', verifiedToken);
+
+  const { phone, role } = verifiedToken;
+  console.log('PHONE 📞', phone);
+
+  // if (role !== 'admin') {
+  //   const result = await User.findOne({ phoneNumber: phone });
+  //   return result;
+  // } else {
+  //   const result = await Admin.findOne({ phoneNumber: phone });
+  //
+  // }
+
+  const result =
+    role !== 'admin'
+      ? await User.findOne({ phoneNumber: phone })
+      : await Admin.findOne({ phoneNumber: phone });
+
+  return result;
+};
+
+// update profile Data
+const updateMyProfile = async (
+  payload: Partial<IUser | IAdmin>,
+  token: string
+): Promise<IUser | IAdmin | null> => {
+  console.log(payload);
+  console.log('Token => 🔖🔖', token);
+
+  let verifiedToken = null;
+
+  try {
+    verifiedToken = jwtHelpers.verifyToken(
+      token as string,
+      config.jwt.secret as Secret
+    );
+  } catch (err) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
+  }
+  console.log('verifiedToken =======', verifiedToken);
+
+  const { phone, role } = verifiedToken;
+  console.log('PHONE 📞', phone);
+
+  const userDetails =
+    role !== 'admin'
+      ? await User.findOne({ phoneNumber: phone })
+      : await Admin.findOne({ phoneNumber: phone });
+
+  console.log('userDetails', userDetails);
+
+  if (!userDetails) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'This cow is invalid');
+  }
+
+  if (userDetails?.phoneNumber !== phone || userDetails?.role !== role) {
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      'You are UnAuthorized to update this profile'
+    );
+  }
+
+  const result =
+    role !== 'admin'
+      ? await User.findOneAndUpdate({ phoneNumber: phone }, payload, {
+          new: true,
+        })
+      : await Admin.findOneAndUpdate({ phoneNumber: phone }, payload, {
+          new: true,
+        });
+
+  console.log(result, 'updated result');
+
+  return result;
+};
+
 export const UserService = {
   createUser,
   updatedUser,
   getSingleUser,
   deleteUser,
+  getMyProfile,
+  updateMyProfile,
 };
