@@ -11,7 +11,7 @@ https://digital-cow-hut-auth.vercel.app/
 | API End Point                                                     | METHOD | Description                                                 |
 | :---------------------------------------------------------------- | :----- | :---------------------------------------------------------- |
 | https://digital-cow-hut-auth.vercel.app/api/v1/auth/login         | POST   | User can login by phoneNumber and password                  |
-| https://digital-cow-hut-auth.vercel.app/api/v1/auth/sign-up       | POST   | User can create a account, User can be Buyer or Seller only |
+| https://digital-cow-hut-auth.vercel.app/api/v1/auth/signup        | POST   | User can create a account, User can be Buyer or Seller only |
 | https://digital-cow-hut-auth.vercel.app/api/v1/auth/refresh-token | POST   | Create a refresh token                                      |
 
 ### Auth (Admin)
