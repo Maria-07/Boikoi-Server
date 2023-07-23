@@ -14,10 +14,10 @@ const UserSchema: Schema<IUser, UserModel> = new Schema<IUser>(
       type: Schema.Types.ObjectId,
       ref: 'customer',
     },
-    // bookShopOwner: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'bookShopOwner',
-    // },
+    bookShopOwner: {
+      type: Schema.Types.ObjectId,
+      ref: 'BookShopOwner',
+    },
     // Admin: {
     //   type: Schema.Types.ObjectId,
     //   ref: 'Admin',

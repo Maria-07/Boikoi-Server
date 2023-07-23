@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
-import { CustomerModel, ICustomer } from './customer.interface';
+import { BookShopOwnerModel, IBookShopOwner } from './bookShopOwner.interface';
 
-export const CustomerSchema = new Schema<ICustomer>(
+export const BookShopOwnerSchema = new Schema<IBookShopOwner>(
   {
     name: {
       type: {
@@ -29,7 +29,7 @@ export const CustomerSchema = new Schema<ICustomer>(
   }
 );
 
-export const Customer = model<ICustomer, CustomerModel>(
-  'customer',
-  CustomerSchema
+export const BookShopOwner = model<IBookShopOwner, BookShopOwnerModel>(
+  'BookShopOwner',
+  BookShopOwnerSchema
 );

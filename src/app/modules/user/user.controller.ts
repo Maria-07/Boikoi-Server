@@ -4,8 +4,7 @@ import sendResponse from '../../../shared/sendResponse';
 import { UserService } from './user.service';
 import httpStatus from 'http-status';
 
-// create customer
-
+//* create customer
 const createCustomer: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { customer, ...userData } = req.body;
@@ -16,10 +15,30 @@ const createCustomer: RequestHandler = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'user created successfully',
+      message: 'Customer created successfully',
       data: result,
     });
   }
 );
 
-export const UserController = { createCustomer };
+//* create bookShopOwner
+const createBookShopOwner: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const { bookShopOwner, ...userData } = req.body;
+    const result = await UserService.createBookShopOwner(
+      bookShopOwner,
+      userData
+    );
+
+    console.log('result ', result);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'BookShopOwner created successfully',
+      data: result,
+    });
+  }
+);
+
+export const UserController = { createCustomer, createBookShopOwner };

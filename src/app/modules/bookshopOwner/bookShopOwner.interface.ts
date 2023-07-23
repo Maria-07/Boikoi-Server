@@ -6,9 +6,9 @@ export type UserName = {
   lastName: string;
 };
 
-export type ICustomer = {
+export type IBookShopOwner = {
   name: UserName;
   contact: string;
 };
 
-export type CustomerModel = Model<ICustomer, Record<string, unknown>>;
+export type BookShopOwnerModel = Model<IBookShopOwner, Record<string, unknown>>;
