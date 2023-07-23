@@ -7,6 +7,7 @@ import ApiError from '../../../errors/ApiError';
 import { User } from './user.model';
 import { IBookShopOwner } from '../bookshopOwner/bookShopOwner.interface';
 import { BookShopOwner } from '../bookshopOwner/bookShopOwner.model';
+import { Admin } from '../admin/admin.model';
 
 //* create customer
 const createCustomer = async (
@@ -107,7 +108,57 @@ const createBookShopOwner = async (
   return newUserAllData;
 };
 
+//* create Admin
+const createAdmin = async (
+  admin: IBookShopOwner,
+  user: IUser
+): Promise<IUser | null> => {
+  let newUserAllData = null;
+
+  const isAdmin = await User.findOne({ email: user?.email });
+
+  if (isAdmin) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'Duplicate Error : This Email User is already Exist'
+    );
+  }
+
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+
+    const newAdmin = await Admin.create([admin], {
+      session,
+    });
+
+    if (!newAdmin.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create a Admin');
+    }
+
+    // set customer _id into user
+    user.customer = newAdmin[0]._id;
+    const newUser = await User.create([user], { session });
+
+    if (!newUser.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create User');
+    }
+
+    newUserAllData = newUser[0];
+
+    await session.commitTransaction();
+    await session.endSession();
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw error;
+  }
+
+  return newUserAllData;
+};
+
 export const UserService = {
   createCustomer,
   createBookShopOwner,
+  createAdmin,
 };

@@ -9,4 +9,7 @@ router.post('/create-customer', UserController.createCustomer);
 //* Create-ShopOwner
 router.post('/create-bookShopOwner', UserController.createBookShopOwner);
 
+//* Create-Admin
+router.post('/create-admin', UserController.createAdmin);
+
 export const UserRoutes = router;

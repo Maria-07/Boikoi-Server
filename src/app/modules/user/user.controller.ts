@@ -41,4 +41,25 @@ const createBookShopOwner: RequestHandler = catchAsync(
   }
 );
 
-export const UserController = { createCustomer, createBookShopOwner };
+//* create admin
+const createAdmin: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const { admin, ...userData } = req.body;
+    const result = await UserService.createAdmin(admin, userData);
+
+    console.log('result ', result);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'admin created successfully',
+      data: result,
+    });
+  }
+);
+
+export const UserController = {
+  createCustomer,
+  createBookShopOwner,
+  createAdmin,
+};
