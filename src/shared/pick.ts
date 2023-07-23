@@ -12,3 +12,5 @@ const pick = <T extends Record<string, unknown>, k extends keyof T>(
 };
 
 export default pick;
+
+//['page','limit','sortBy','sortOrder']

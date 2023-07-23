@@ -1,25 +1,27 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, model } from 'mongoose';
 import { IUser, UserModel } from './user.interface';
-import { role } from './user.constance';
 import bcrypt, { hash } from 'bcrypt';
+import { role } from './user.constant';
 import config from '../../../config';
 
 const UserSchema: Schema<IUser, UserModel> = new Schema<IUser>(
   {
-    phoneNumber: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
     role: { type: String, enum: role, required: true },
-    password: { type: String, required: true, select: 0 },
-    name: {
-      required: true,
-      type: {
-        firstName: { type: String, required: true },
-        lastName: { type: String, required: true },
-      },
+    password: { type: String, required: true },
+    customer: {
+      type: Schema.Types.ObjectId,
+      ref: 'customer',
     },
-    address: { type: String, required: true },
-    budget: { type: Number, required: true },
-    income: { type: Number, required: true },
+    // bookShopOwner: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'bookShopOwner',
+    // },
+    // Admin: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'Admin',
+    // },
   },
   {
     timestamps: true,
@@ -30,11 +32,11 @@ const UserSchema: Schema<IUser, UserModel> = new Schema<IUser>(
 );
 
 UserSchema.statics.isUserExist = async function (
-  phoneNumber: string
-): Promise<Pick<IUser, 'phoneNumber' | 'role' | 'password'> | null> {
+  email: string
+): Promise<Pick<IUser, 'role' | 'password' | 'email'> | null> {
   return await User.findOne(
-    { phoneNumber },
-    { _id: 1, phoneNumber: 1, role: 1, password: 1 }
+    { email },
+    { _id: 1, email: 1, role: 1, password: 1 }
   );
 };
 

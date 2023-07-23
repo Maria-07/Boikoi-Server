@@ -1,7 +1,7 @@
 {
-  "name": "cow-hut-backend-assignment",
+  "name": "Boikoi-Auth-Service",
   "version": "1.0.0",
-  "description": "Cow Hut Backend Auth Service Assignment",
+  "description": "A book-Shop Management System",
   "main": "src/server.ts",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",

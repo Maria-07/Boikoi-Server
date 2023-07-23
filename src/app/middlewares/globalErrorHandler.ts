@@ -1,10 +1,11 @@
-/* eslint-disable no-unused-expressions */
 /* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
+/* eslint-disable no-unused-expressions */
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
+import { ZodError } from 'zod';
 import config from '../../config';
 import { IGenericErrorMassage } from '../../interfaces/error';
 import handleValidationError from '../../errors/handleValidationError';
-import { ZodError } from 'zod';
 import handleZodErrorHandler from '../../errors/handleZodErrorHandler';
 import handleCastError from '../../errors/handleCastError';
 import ApiError from '../../errors/ApiError';
@@ -67,7 +68,7 @@ const globalErrorHandler: ErrorRequestHandler = (
     success: false,
     message,
     errorMessages,
-    stack: error?.stack,
+    stack: config.env !== 'production' ? error?.stack : undefined,
   });
 };
 
