@@ -8,3 +8,15 @@ export const shopFilterableFields = [
   'shop_close_time',
   'book_shop_ratings',
 ];
+export const bookFilterableFields = [
+  'searchTerm',
+  'title',
+  'author_name',
+  'publisher_name',
+  'genre',
+  'class_level',
+  'faculty_name',
+  'price',
+  'is_sale',
+  'Last_edition',
+];

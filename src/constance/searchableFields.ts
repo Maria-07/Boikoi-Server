@@ -10,3 +10,15 @@ export const shopSearchableFields = [
   'location',
   'address',
 ];
+export const bookSearchableFields = [
+  'searchTerm',
+  'title',
+  'author_name',
+  'publisher_name',
+  'genre',
+  'class_level',
+  'faculty_name',
+  'price',
+  'is_sale',
+  'Last_edition',
+];
