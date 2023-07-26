@@ -6,6 +6,12 @@ import { AuthValidation } from './auth.validation';
 const router = express.Router();
 
 router.post(
+  '/signup',
+  // validateRequest(AuthValidation.createUserZodSchema),
+  AuthController.createUser
+);
+
+router.post(
   '/login',
   validateRequest(AuthValidation.loginZodSchema),
   AuthController.loginUser

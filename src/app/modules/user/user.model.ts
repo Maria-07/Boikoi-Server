@@ -10,18 +10,11 @@ const UserSchema: Schema<IUser, UserModel> = new Schema<IUser>(
     email: { type: String, required: true, unique: true },
     role: { type: String, enum: role, required: true },
     password: { type: String, required: true },
-    customer: {
-      type: Schema.Types.ObjectId,
-      ref: 'customer',
-    },
-    bookShopOwner: {
-      type: Schema.Types.ObjectId,
-      ref: 'BookShopOwner',
-    },
-    admin: {
-      type: Schema.Types.ObjectId,
-      ref: 'Admin',
-    },
+
+    firstName: { type: String, required: true },
+    middleName: { type: String },
+    lastName: { type: String, required: true },
+    contact: { type: String, required: true },
   },
   {
     timestamps: true,
