@@ -16,6 +16,14 @@ import mongoose from 'mongoose';
 const createUser = async (user: IUser): Promise<IUser | null> => {
   let newUserAllData = null;
 
+  const existUser = await User.findOne({
+    email: user.email,
+  });
+
+  if (existUser) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Already exist');
+  }
+
   const session = await mongoose.startSession();
 
   try {

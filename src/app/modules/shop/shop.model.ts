@@ -21,12 +21,10 @@ const ShopSchema = new Schema<IShop, ShopModel>(
     shop_open_time: { type: String },
     shop_close_time: { type: String },
     book_shop_ratings: { type: String },
-    BookShopOwner: {
-      type: Schema.Types.ObjectId,
-      ref: 'BookShopOwner',
-      required: true,
-    },
     userEmail: {
+      type: String,
+    },
+    description: {
       type: String,
     },
   },

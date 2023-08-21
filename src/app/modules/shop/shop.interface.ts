@@ -1,5 +1,4 @@
-import { Model, Types } from 'mongoose';
-import { IBookShopOwner } from '../bookshopOwner/bookShopOwner.interface';
+import { Model } from 'mongoose';
 
 export type IStreet =
   | 'Kemal Ataturk Avenue'
@@ -140,7 +139,7 @@ export type IAddress = {
 
 export type IShop = {
   shop_name: string;
-  shop_number: string;
+  shop_number?: string;
   contact_number: string;
   image?: string;
   location: ILocation;
@@ -148,9 +147,9 @@ export type IShop = {
   shop_weekend?: string;
   shop_open_time?: string;
   shop_close_time?: string;
-  book_shop_ratings: string;
-  BookShopOwner: Types.ObjectId | IBookShopOwner;
+  book_shop_ratings?: string;
   userEmail?: string;
+  description?: string;
 };
 
 export type IShopFilter = {

@@ -1,6 +1,7 @@
 import { IArea, ICity, ILocation, IStreet } from './shop.interface';
 
 export const streets: IStreet[] = [
+  'Others',
   'Kemal Ataturk Avenue',
   'Bangabandhu Avenue',
   'Shahbagh Avenue',
@@ -44,6 +45,7 @@ export const streets: IStreet[] = [
 ];
 
 export const areas: IArea[] = [
+  'Others',
   'Uttara',
   'Gulshan',
   'Banani',
@@ -96,6 +98,7 @@ export const areas: IArea[] = [
 ];
 
 export const cities: ICity[] = [
+  'Others',
   'Dhaka',
   'Chittagong (Chattogram)',
   'Khulna',
@@ -119,6 +122,7 @@ export const cities: ICity[] = [
 ];
 
 export const locations: ILocation[] = [
+  'Others',
   'Nilkhet Book Market',
   'BanglaBazar Book Market',
   'Aziz Super Market',
