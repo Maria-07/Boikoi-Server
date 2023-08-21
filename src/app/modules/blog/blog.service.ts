@@ -5,8 +5,10 @@ import {
   IPaginationOption,
 } from '../../../interfaces/pagination';
 import { blogSearchableFields } from './blog.constance';
-import { IBlog, IBlogFilter } from './blog.interface';
+import { IBlog, IBlogFilter, IComment } from './blog.interface';
 import { Blog } from './blog.model';
+import ApiError from '../../../errors/ApiError';
+import httpStatus from 'http-status';
 
 // create a Blog
 const createBlog = async (blogData: IBlog): Promise<IBlog | null> => {
@@ -62,7 +64,59 @@ const getAllBlog = async (
   };
 };
 
+// get a single Blog
+const getSingleBlog = async (id: string): Promise<IBlog | null> => {
+  const result = await Blog.findById(id);
+  return result;
+};
+
+// updated Blog
+const updateBlog = async (
+  id: string,
+  payload: Partial<IBlog>
+): Promise<IBlog | null> => {
+  const result = await Blog.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+
+  return result;
+};
+
+// Delete Blog
+const deleteBlog = async (id: string): Promise<IBlog | null> => {
+  const result = await Blog.findByIdAndDelete({ _id: id }, { new: true });
+
+  return result;
+};
+
+// add Comment
+const AddBlogComment = async (
+  blogId: string,
+  comments: IComment
+): Promise<void> => {
+  const blog = await Blog.findById(blogId).lean().exec();
+
+  if (!blog) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'blog not found');
+  }
+
+  if (!blog.comments) {
+    blog.comments = [];
+  }
+
+  comments.date = new Date();
+  blog.comments.push(comments);
+
+  await Blog.findByIdAndUpdate(blogId, {
+    comments: blog.comments,
+  }).exec();
+};
+
 export const BlogService = {
   createBlog,
   getAllBlog,
+  getSingleBlog,
+  updateBlog,
+  deleteBlog,
+  AddBlogComment,
 };

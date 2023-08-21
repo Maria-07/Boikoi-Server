@@ -6,7 +6,8 @@ import httpStatus from 'http-status';
 import { BlogFilterableFields } from './blog.constance';
 import pick from '../../../shared/pick';
 import { paginationFields } from '../../../constance/paginationC';
-import { IBlog } from './blog.interface';
+import { IBlog, IComment } from './blog.interface';
+import ApiError from '../../../errors/ApiError';
 
 // create a Blog
 const createBlog: RequestHandler = catchAsync(
@@ -26,7 +27,6 @@ const createBlog: RequestHandler = catchAsync(
 // get all Blog [search and filter]
 const getAllBlog = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, BlogFilterableFields);
-  // console.log('filters ==== ', filters);
 
   const paginationOption = pick(req.query, paginationFields);
 
@@ -41,7 +41,87 @@ const getAllBlog = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// get a single Blog
+const getSingleBlog = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const result = await BlogService.getSingleBlog(id);
+
+  sendResponse<IBlog>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Blog retrieved successfully',
+    data: result,
+  });
+});
+
+// Update Blog
+const updateBlog = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const updatedData = req.body;
+
+  const result = await BlogService.updateBlog(id, updatedData);
+
+  sendResponse<IBlog>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Blog Updated successfully',
+    data: result,
+  });
+});
+
+// Delete Blog
+const deleteBlog = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const result = await BlogService.deleteBlog(id);
+
+  sendResponse<IBlog>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Blog Deleted successfully',
+    data: result,
+  });
+});
+
+//* Add comments
+const AddBlogComment: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const blogId = req.params.id;
+    const { name, comment } = req.body;
+
+    const blog = await BlogService.getSingleBlog(blogId);
+
+    if (!blog) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'blog not found');
+    }
+
+    // Make sure blog.comments is defined before pushing the new review
+    if (!blog.comments) {
+      blog.comments = [];
+    }
+
+    // Add the review to the blog's comments array
+    const comments: IComment = { name, comment };
+    blog.comments.push(comments);
+
+    // Save the updated blog with the new review
+    await BlogService.AddBlogComment(blogId, comments);
+
+    sendResponse<IBlog>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Blog Comment added successfully!',
+      data: blog,
+    });
+  }
+);
+
 export const BlogController = {
   createBlog,
   getAllBlog,
+  getSingleBlog,
+  updateBlog,
+  deleteBlog,
+  AddBlogComment,
 };
