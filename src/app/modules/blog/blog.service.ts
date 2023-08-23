@@ -96,6 +96,8 @@ const AddBlogComment = async (
 ): Promise<void> => {
   const blog = await Blog.findById(blogId).lean().exec();
 
+  console.log('comments', comments);
+
   if (!blog) {
     throw new ApiError(httpStatus.NOT_FOUND, 'blog not found');
   }
@@ -109,7 +111,9 @@ const AddBlogComment = async (
 
   await Blog.findByIdAndUpdate(blogId, {
     comments: blog.comments,
-  }).exec();
+  })
+    .sort('date')
+    .exec();
 };
 
 export const BlogService = {

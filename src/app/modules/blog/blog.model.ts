@@ -13,6 +13,7 @@ const BlogSchema: Schema<IBlog> = new Schema<IBlog>(
         name: { type: String },
         comment: { type: String },
         date: { type: Date },
+        // timestamps: true,
       },
     ],
   },
