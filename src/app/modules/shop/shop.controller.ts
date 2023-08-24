@@ -79,6 +79,35 @@ const getSingleShop = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// get a My Shop
+const getMyShop = catchAsync(async (req: Request, res: Response) => {
+  const token = req.headers.authorization;
+
+  let verifiedToken = null;
+
+  try {
+    verifiedToken = jwtHelpers.verifyToken(
+      token as string,
+      config.jwt.secret as Secret
+    );
+  } catch (err) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
+  }
+
+  console.log('verifiedToken =======', verifiedToken);
+
+  const { userEmail } = verifiedToken;
+
+  const result = await Shop.findOne({ userEmail: userEmail });
+
+  sendResponse<IShop>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'My Shop retrieved successfully',
+    data: result,
+  });
+});
+
 //* get all Shop's by address
 const getShopAddress = catchAsync(async (req: Request, res: Response) => {
   const paginationOption = pick(req.query, paginationFields);
@@ -109,6 +138,8 @@ const updateShop = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const updatedData = req.body;
   const token = req.headers.authorization;
+
+  console.log('updatedData', updatedData);
 
   const result = await ShopService.updateShop(id, updatedData, token as string);
 
@@ -143,4 +174,5 @@ export const ShopController = {
   deleteShop,
   updateShop,
   getShopAddress,
+  getMyShop,
 };

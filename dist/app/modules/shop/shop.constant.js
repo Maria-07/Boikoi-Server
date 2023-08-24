@@ -1,5 +1,6 @@
-import { ILocation } from './shop.interface';
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.locations = void 0;
 // export const streets: IStreet[] = [
 //   'Others',
 //   'Kemal Ataturk Avenue',
@@ -43,7 +44,6 @@ import { ILocation } from './shop.interface';
 //   'Baily Road',
 //   'Hatirjheel Link Road',
 // ];
-
 // export const areas: IArea[] = [
 //   'Others',
 //   'Uttara',
@@ -96,7 +96,6 @@ import { ILocation } from './shop.interface';
 //   'Mugda',
 //   'Shankar',
 // ];
-
 // export const cities: ICity[] = [
 //   'Others',
 //   'Dhaka',
@@ -120,18 +119,17 @@ import { ILocation } from './shop.interface';
 //   "Cox's Bazar",
 //   'Jamalpur',
 // ];
-
-export const locations: ILocation[] = [
-  'Others',
-  'Nilkhet Book Market',
-  'BanglaBazar Book Market',
-  'Aziz Super Market',
-  'Rokomari Book Store',
-  'Prothoma Prokashon Bookstores',
-  'Pathak Shamabesh Center',
-  'Batighar',
-  'Jonaki Boi Ghar',
-  'Bookworm',
-  'Bookshelf',
-  'Others',
+exports.locations = [
+    'Others',
+    'Nilkhet Book Market',
+    'BanglaBazar Book Market',
+    'Aziz Super Market',
+    'Rokomari Book Store',
+    'Prothoma Prokashon Bookstores',
+    'Pathak Shamabesh Center',
+    'Batighar',
+    'Jonaki Boi Ghar',
+    'Bookworm',
+    'Bookshelf',
+    'Others',
 ];

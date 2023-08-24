@@ -5,6 +5,13 @@ import auth from '../../middlewares/auth';
 
 const router = express.Router();
 
+// get my Shop
+router.get(
+  '/my-shop',
+  auth(ENUM_USER_ROLE.BOOK_SHOP_OWNER),
+  ShopController.getMyShop
+);
+
 //* get all Shop's by address
 router.get('/shop-address', ShopController.getShopAddress);
 
@@ -18,29 +25,29 @@ router.post(
 // get all Shop
 router.get(
   '/',
-  // auth(
-  //   ENUM_USER_ROLE.ADMIN,
-  //   ENUM_USER_ROLE.CUSTOMER,
-  //   ENUM_USER_ROLE.BOOK_SHOP_OWNER
-  // ),
+  auth(
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.CUSTOMER,
+    ENUM_USER_ROLE.BOOK_SHOP_OWNER
+  ),
   ShopController.getAllShop
 );
 
 // get single Shop
 router.get(
   '/:id',
-  // auth(
-  //   ENUM_USER_ROLE.ADMIN,
-  //   ENUM_USER_ROLE.CUSTOMER,
-  //   ENUM_USER_ROLE.BOOK_SHOP_OWNER
-  // ),
+  auth(
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.CUSTOMER,
+    ENUM_USER_ROLE.BOOK_SHOP_OWNER
+  ),
   ShopController.getSingleShop
 );
 
 // update a Shop
 router.patch(
   '/:id',
-  // auth(ENUM_USER_ROLE.BOOK_SHOP_OWNER),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.BOOK_SHOP_OWNER),
   ShopController.updateShop
 );
 

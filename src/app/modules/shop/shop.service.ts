@@ -132,7 +132,7 @@ const updateShop = async (
   payload: Partial<IShop>,
   token: string
 ): Promise<IShop | null> => {
-  // console.log(id, payload);
+  console.log(id, payload);
   // console.log('Token => 🔖🔖', token);
 
   let verifiedToken = null;
@@ -175,7 +175,7 @@ const updateShop = async (
     new: true,
   }).populate('bookShopOwner');
 
-  // console.log(result, 'updated result');
+  console.log(result, 'updated result');
 
   return result;
 };
