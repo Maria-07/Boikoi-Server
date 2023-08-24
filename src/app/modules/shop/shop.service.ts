@@ -16,7 +16,7 @@ import { Secret } from 'jsonwebtoken';
 
 // create a Shop
 const createShop = async (shopData: IShop): Promise<IShop | null> => {
-  const bookShopOwnerDetails = await User.findById(shopData.BookShopOwner);
+  const bookShopOwnerDetails = await User.findById(shopData.bookShopOwner);
   console.log(bookShopOwnerDetails);
 
   if (bookShopOwnerDetails) {
@@ -28,6 +28,12 @@ const createShop = async (shopData: IShop): Promise<IShop | null> => {
     }
   }
 
+  const isExist = await Shop.findOne({ bookShopOwner: shopData.bookShopOwner });
+  console.log('isExist', isExist);
+
+  if (isExist) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Shop already Existed !!');
+  }
   let newShopAllData = null;
 
   const session = await mongoose.startSession();
@@ -97,7 +103,7 @@ const getAllShop = async (
   const whereCondition = andCondition.length > 0 ? { $and: andCondition } : {};
 
   const result = await Shop.find(whereCondition)
-    // .populate('BookShopOwner')
+    .populate('bookShopOwner')
     .sort(sortConditions)
     .skip(skip)
     .limit(limit);

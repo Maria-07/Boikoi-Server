@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { IShop, ShopModel } from './shop.interface';
-import { areas, cities, locations, streets } from './shop.constant';
+import { locations } from './shop.constant';
 
 const ShopSchema = new Schema<IShop, ShopModel>(
   {
@@ -11,9 +11,9 @@ const ShopSchema = new Schema<IShop, ShopModel>(
     location: { type: String, enum: locations, required: true },
     address: {
       type: {
-        street: { type: String, enum: streets },
-        area: { type: String, enum: areas },
-        city: { type: String, enum: cities },
+        street: { type: String },
+        area: { type: String },
+        city: { type: String },
       },
       required: true,
     },
@@ -23,6 +23,11 @@ const ShopSchema = new Schema<IShop, ShopModel>(
     book_shop_ratings: { type: String },
     userEmail: {
       type: String,
+    },
+    bookShopOwner: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
     },
     description: {
       type: String,

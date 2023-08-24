@@ -1,14 +1,17 @@
 import express from 'express';
-// import auth from '../../middlewares/auth';
-// import { ENUM_USER_ROLE } from '../../../enums/user';
 import { ShopController } from './shop.controller';
+import { ENUM_USER_ROLE } from '../../../enums/user';
+import auth from '../../middlewares/auth';
 
 const router = express.Router();
 
-// create a Shop Profile
+//* get all Shop's by address
+router.get('/shop-address', ShopController.getShopAddress);
+
+//* create a Shop Profile
 router.post(
   '/',
-  // auth(ENUM_USER_ROLE.BOOK_SHOP_OWNER),
+  auth(ENUM_USER_ROLE.BOOK_SHOP_OWNER),
   ShopController.createShop
 );
 

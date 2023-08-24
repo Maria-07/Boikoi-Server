@@ -11,8 +11,11 @@ import { Secret } from 'jsonwebtoken';
 import config from '../../../config';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import ApiError from '../../../errors/ApiError';
+import { paginationHelpers } from '../../../helpers/paginationHelpers';
+import { SortOrder } from 'mongoose';
+import { Shop } from './shop.model';
 
-// create a Shop profile
+//* create a Shop profile
 const createShop: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const token = req.headers.authorization;
@@ -76,6 +79,31 @@ const getSingleShop = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+//* get all Shop's by address
+const getShopAddress = catchAsync(async (req: Request, res: Response) => {
+  const paginationOption = pick(req.query, paginationFields);
+  const { sortBy, sortOrder } =
+    paginationHelpers.calculationPagination(paginationOption);
+
+  const sortConditions: { [key: string]: SortOrder } = {};
+
+  if (sortBy && sortOrder) {
+    sortConditions[sortBy] = sortOrder;
+  }
+
+  const result = await Shop.find().sort(sortConditions).select({
+    address: 1,
+    location: 1,
+  });
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'get all address successfully',
+    data: result,
+  });
+});
+
 // Update Shop
 const updateShop = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
@@ -114,4 +142,5 @@ export const ShopController = {
   getSingleShop,
   deleteShop,
   updateShop,
+  getShopAddress,
 };
