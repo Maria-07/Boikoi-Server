@@ -27,3 +27,16 @@ export const bookFilterableFields = [
   'maxPrice',
   'minPrice',
 ];
+export const oldBookFilterableFields = [
+  'searchTerm',
+  'title',
+  'author_name',
+  'publisher_name',
+  'class_level',
+  'faculty_name',
+  'price',
+  'Last_edition',
+  'userEmail',
+  'maxPrice',
+  'minPrice',
+];

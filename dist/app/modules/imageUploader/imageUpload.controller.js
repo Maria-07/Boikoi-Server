@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 // import catchAsync from '../../../shared/catchAsync';
 // import { Request, RequestHandler, Response } from 'express';
 // const imageUpload: RequestHandler = catchAsync(

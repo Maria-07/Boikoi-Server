@@ -1,9 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.Book = void 0;
-const mongoose_1 = require("mongoose");
-const book_constance_1 = require("./book.constance");
-const BookSchema = new mongoose_1.Schema({
+const mongoose_1 = require('mongoose');
+const book_constance_1 = require('./book.constance');
+const BookSchema = new mongoose_1.Schema(
+  {
     title: { type: String, required: true },
     image: { type: String },
     author_name: { type: String },
@@ -17,25 +18,27 @@ const BookSchema = new mongoose_1.Schema({
     is_sale: { type: Boolean, default: false },
     Last_edition: { type: String },
     shop: {
-        type: mongoose_1.Schema.Types.ObjectId,
-        ref: 'Shop',
-        required: true,
+      type: mongoose_1.Schema.Types.ObjectId,
+      ref: 'Shop',
+      required: true,
     },
     userEmail: {
-        type: String,
+      type: String,
     },
     reviews: [
-        {
-            name: { type: String },
-            review: { type: String },
-            date: { type: Date },
-            rating: { type: Number },
-        },
+      {
+        name: { type: String },
+        review: { type: String },
+        date: { type: Date },
+        rating: { type: Number },
+      },
     ],
-}, {
+  },
+  {
     timestamps: true,
     toJSON: {
-        virtuals: true,
+      virtuals: true,
     },
-});
+  }
+);
 exports.Book = (0, mongoose_1.model)('Book', BookSchema);

@@ -163,8 +163,8 @@ export type IBookFilter = {
   author_name?: string;
   publisher_name?: string;
   genre?: IGenre;
-  class_level?: IEducationLevel;
-  faculty_name?: IFaculty;
+  class_level?: string;
+  faculty_name?: string;
   is_sale?: boolean;
   Last_edition?: string;
   userEmail?: string;

@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.locations = void 0;
 // export const streets: IStreet[] = [
 //   'Others',
@@ -120,15 +120,15 @@ exports.locations = void 0;
 //   'Jamalpur',
 // ];
 exports.locations = [
-    'Nilkhet Book Market',
-    'BanglaBazar Book Market',
-    'Aziz Super Market',
-    'Rokomari Book Store',
-    'Prothoma Prokashon Bookstores',
-    'Pathak Shamabesh Center',
-    'Batighar',
-    'Jonaki Boi Ghar',
-    'Bookworm',
-    'Bookshelf',
-    'Others',
+  'Nilkhet Book Market',
+  'BanglaBazar Book Market',
+  'Aziz Super Market',
+  'Rokomari Book Store',
+  'Prothoma Prokashon Bookstores',
+  'Pathak Shamabesh Center',
+  'Batighar',
+  'Jonaki Boi Ghar',
+  'Bookworm',
+  'Bookshelf',
+  'Others',
 ];

@@ -23,3 +23,11 @@ export const bookSearchableFields = [
   'price',
   'Last_edition',
 ];
+export const oldBookSearchableFields = [
+  'searchTerm',
+  'title',
+  'author_name',
+  'publisher_name',
+  'class_level',
+  'faculty_name',
+];
