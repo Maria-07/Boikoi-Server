@@ -120,7 +120,6 @@ exports.locations = void 0;
 //   'Jamalpur',
 // ];
 exports.locations = [
-    'Others',
     'Nilkhet Book Market',
     'BanglaBazar Book Market',
     'Aziz Super Market',

@@ -20,6 +20,7 @@ exports.educationLevels = [
     'Technical and Vocational Institutes',
 ];
 exports.bookGenres = [
+    '',
     'Literary Fiction',
     'Historical Fiction',
     'Mystery/Thriller/Crime',

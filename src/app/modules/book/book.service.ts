@@ -61,7 +61,7 @@ const getAllBook = async (
   filters: IBookFilter,
   paginationOption: IPaginationOption
 ): Promise<IGenericResponse<IBook[]>> => {
-  const { searchTerm, ...filtersData } = filters;
+  const { searchTerm, maxPrice, minPrice, ...filtersData } = filters;
 
   const andCondition = [];
 
@@ -81,6 +81,30 @@ const getAllBook = async (
       $and: Object.entries(filtersData).map(([field, value]) => ({
         [field]: value,
       })),
+    });
+  }
+
+  if (minPrice !== undefined) {
+    andCondition.push({
+      price: {
+        $gte: minPrice,
+      },
+    });
+  }
+  if (maxPrice !== undefined) {
+    andCondition.push({
+      price: {
+        $lte: maxPrice,
+      },
+    });
+  }
+
+  if (minPrice !== undefined && maxPrice !== undefined) {
+    andCondition.push({
+      price: {
+        $gte: minPrice,
+        $lte: maxPrice,
+      },
     });
   }
 

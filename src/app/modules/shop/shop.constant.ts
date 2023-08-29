@@ -122,7 +122,6 @@ import { ILocation } from './shop.interface';
 // ];
 
 export const locations: ILocation[] = [
-  'Others',
   'Nilkhet Book Market',
   'BanglaBazar Book Market',
   'Aziz Super Market',

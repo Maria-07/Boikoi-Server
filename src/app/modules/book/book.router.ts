@@ -13,31 +13,15 @@ router.post(
 );
 
 // get all Book
-router.get(
-  '/',
-  // auth(
-  //   ENUM_USER_ROLE.ADMIN,
-  //   ENUM_USER_ROLE.CUSTOMER,
-  //   ENUM_USER_ROLE.BOOK_SHOP_OWNER
-  // ),
-  BookController.getAllBook
-);
+router.get('/', BookController.getAllBook);
 
 // get single Book
-router.get(
-  '/:id',
-  // auth(
-  //   ENUM_USER_ROLE.ADMIN,
-  //   ENUM_USER_ROLE.CUSTOMER,
-  //   ENUM_USER_ROLE.BOOK_SHOP_OWNER
-  // ),
-  BookController.getSingleBook
-);
+router.get('/:id', BookController.getSingleBook);
 
 // update a Book
 router.patch(
   '/:id',
-  // auth(ENUM_USER_ROLE.BOOK_SHOP_OWNER),
+  auth(ENUM_USER_ROLE.BOOK_SHOP_OWNER),
   BookController.updateBook
 );
 

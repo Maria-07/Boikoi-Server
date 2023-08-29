@@ -31,9 +31,9 @@ const createShop = async (shopData: IShop): Promise<IShop | null> => {
   const isExist = await Shop.findOne({ bookShopOwner: shopData.bookShopOwner });
   console.log('isExist', isExist);
 
-  if (isExist) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Shop already Existed !!');
-  }
+  // if (isExist) {
+  //   throw new ApiError(httpStatus.BAD_REQUEST, 'Shop already Existed !!');
+  // }
   let newShopAllData = null;
 
   const session = await mongoose.startSession();

@@ -11,7 +11,9 @@ exports.shopSearchableFields = [
     'shop_close_time',
     'book_shop_ratings',
     'location',
-    'address',
+    'address.city',
+    'address.street',
+    'address.area',
 ];
 exports.bookSearchableFields = [
     'searchTerm',
@@ -22,6 +24,5 @@ exports.bookSearchableFields = [
     'class_level',
     'faculty_name',
     'price',
-    'is_sale',
     'Last_edition',
 ];

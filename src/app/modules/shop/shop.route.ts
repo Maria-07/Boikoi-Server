@@ -23,26 +23,10 @@ router.post(
 );
 
 // get all Shop
-router.get(
-  '/',
-  auth(
-    ENUM_USER_ROLE.ADMIN,
-    ENUM_USER_ROLE.CUSTOMER,
-    ENUM_USER_ROLE.BOOK_SHOP_OWNER
-  ),
-  ShopController.getAllShop
-);
+router.get('/', ShopController.getAllShop);
 
 // get single Shop
-router.get(
-  '/:id',
-  auth(
-    ENUM_USER_ROLE.ADMIN,
-    ENUM_USER_ROLE.CUSTOMER,
-    ENUM_USER_ROLE.BOOK_SHOP_OWNER
-  ),
-  ShopController.getSingleShop
-);
+router.get('/:id', ShopController.getSingleShop);
 
 // update a Shop
 router.patch(

@@ -6,14 +6,14 @@ const book_constance_1 = require("./book.constance");
 const BookSchema = new mongoose_1.Schema({
     title: { type: String, required: true },
     image: { type: String },
-    author_name: { type: String, required: true },
-    publisher_name: { type: String, required: true },
+    author_name: { type: String },
+    publisher_name: { type: String },
     genre: { type: String, enum: book_constance_1.bookGenres },
-    class_level: { type: String, enum: book_constance_1.educationLevels },
-    faculty_name: { type: String, enum: book_constance_1.facultiesList },
+    class_level: { type: String },
+    faculty_name: { type: String },
     quantity: { type: Number },
     description: { type: String },
-    price: { type: String, required: true },
+    price: { type: Number, required: true },
     is_sale: { type: Boolean, default: false },
     Last_edition: { type: String },
     shop: {
@@ -24,7 +24,14 @@ const BookSchema = new mongoose_1.Schema({
     userEmail: {
         type: String,
     },
-    reviews: [{ type: String }],
+    reviews: [
+        {
+            name: { type: String },
+            review: { type: String },
+            date: { type: Date },
+            rating: { type: Number },
+        },
+    ],
 }, {
     timestamps: true,
     toJSON: {

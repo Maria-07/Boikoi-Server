@@ -12,25 +12,11 @@ const router = express_1.default.Router();
 // create a Book Profile
 router.post('/', (0, auth_1.default)(user_1.ENUM_USER_ROLE.BOOK_SHOP_OWNER), book_controller_1.BookController.createBook);
 // get all Book
-router.get('/', 
-// auth(
-//   ENUM_USER_ROLE.ADMIN,
-//   ENUM_USER_ROLE.CUSTOMER,
-//   ENUM_USER_ROLE.BOOK_SHOP_OWNER
-// ),
-book_controller_1.BookController.getAllBook);
+router.get('/', book_controller_1.BookController.getAllBook);
 // get single Book
-router.get('/:id', 
-// auth(
-//   ENUM_USER_ROLE.ADMIN,
-//   ENUM_USER_ROLE.CUSTOMER,
-//   ENUM_USER_ROLE.BOOK_SHOP_OWNER
-// ),
-book_controller_1.BookController.getSingleBook);
+router.get('/:id', book_controller_1.BookController.getSingleBook);
 // update a Book
-router.patch('/:id', 
-// auth(ENUM_USER_ROLE.BOOK_SHOP_OWNER),
-book_controller_1.BookController.updateBook);
+router.patch('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.BOOK_SHOP_OWNER), book_controller_1.BookController.updateBook);
 // delete a Book
 router.delete('/:id', 
 // auth(ENUM_USER_ROLE.BOOK_SHOP_OWNER, ENUM_USER_ROLE.ADMIN),

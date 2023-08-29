@@ -1,19 +1,19 @@
 import { Schema, model } from 'mongoose';
 import { BookModel, IBook } from './book.interface';
-import { bookGenres, educationLevels, facultiesList } from './book.constance';
+import { bookGenres } from './book.constance';
 
 const BookSchema = new Schema<IBook, BookModel>(
   {
     title: { type: String, required: true },
     image: { type: String },
-    author_name: { type: String, required: true },
-    publisher_name: { type: String, required: true },
+    author_name: { type: String },
+    publisher_name: { type: String },
     genre: { type: String, enum: bookGenres },
-    class_level: { type: String, enum: educationLevels },
-    faculty_name: { type: String, enum: facultiesList },
+    class_level: { type: String },
+    faculty_name: { type: String },
     quantity: { type: Number },
     description: { type: String },
-    price: { type: String, required: true },
+    price: { type: Number, required: true },
     is_sale: { type: Boolean, default: false },
     Last_edition: { type: String },
     shop: {
@@ -24,7 +24,14 @@ const BookSchema = new Schema<IBook, BookModel>(
     userEmail: {
       type: String,
     },
-    reviews: [{ type: String }],
+    reviews: [
+      {
+        name: { type: String },
+        review: { type: String },
+        date: { type: Date },
+        rating: { type: Number },
+      },
+    ],
   },
   {
     timestamps: true,

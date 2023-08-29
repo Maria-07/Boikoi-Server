@@ -20,6 +20,7 @@ export const educationLevels: IEducationLevel[] = [
 ];
 
 export const bookGenres: IGenre[] = [
+  '',
   'Literary Fiction',
   'Historical Fiction',
   'Mystery/Thriller/Crime',

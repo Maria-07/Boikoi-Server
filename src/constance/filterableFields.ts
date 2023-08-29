@@ -4,9 +4,13 @@ export const shopFilterableFields = [
   'shop_number',
   'contact_number',
   'shop_weekend',
+  'location',
   'shop_open_time',
   'shop_close_time',
   'book_shop_ratings',
+  'address.city',
+  'address.street',
+  'address.area',
 ];
 export const bookFilterableFields = [
   'searchTerm',
@@ -19,4 +23,7 @@ export const bookFilterableFields = [
   'price',
   'is_sale',
   'Last_edition',
+  'userEmail',
+  'maxPrice',
+  'minPrice',
 ];

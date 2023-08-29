@@ -65,7 +65,7 @@ const createBook = (bookData) => __awaiter(void 0, void 0, void 0, function* () 
 });
 // get all Books
 const getAllBook = (filters, paginationOption) => __awaiter(void 0, void 0, void 0, function* () {
-    const { searchTerm } = filters, filtersData = __rest(filters, ["searchTerm"]);
+    const { searchTerm, maxPrice, minPrice } = filters, filtersData = __rest(filters, ["searchTerm", "maxPrice", "minPrice"]);
     const andCondition = [];
     if (searchTerm) {
         andCondition.push({
@@ -82,6 +82,28 @@ const getAllBook = (filters, paginationOption) => __awaiter(void 0, void 0, void
             $and: Object.entries(filtersData).map(([field, value]) => ({
                 [field]: value,
             })),
+        });
+    }
+    if (minPrice !== undefined) {
+        andCondition.push({
+            price: {
+                $gte: minPrice,
+            },
+        });
+    }
+    if (maxPrice !== undefined) {
+        andCondition.push({
+            price: {
+                $lte: maxPrice,
+            },
+        });
+    }
+    if (minPrice !== undefined && maxPrice !== undefined) {
+        andCondition.push({
+            price: {
+                $gte: minPrice,
+                $lte: maxPrice,
+            },
         });
     }
     const { page, limit, skip, sortBy, sortOrder } = paginationHelpers_1.paginationHelpers.calculationPagination(paginationOption);

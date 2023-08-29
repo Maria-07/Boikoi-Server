@@ -21,6 +21,7 @@ export type IEducationLevel =
   | 'Others';
 
 export type IGenre =
+  | ''
   | 'Academic'
   | 'Literary Fiction'
   | 'Historical Fiction'
@@ -131,22 +132,29 @@ export type IFaculty =
   | 'Faculty of Linguistics'
   | 'Others';
 
+export type IReview = {
+  name: string;
+  review?: string;
+  date?: Date;
+  rating?: number;
+};
+
 export type IBook = {
   title: string;
   image?: string;
-  author_name: string;
-  publisher_name: string;
+  author_name?: string;
+  publisher_name?: string;
   genre?: IGenre;
-  class_level?: IEducationLevel;
-  faculty_name?: IFaculty;
+  class_level?: string;
+  faculty_name?: string;
   quantity?: number;
   description?: string;
-  price: string;
+  price: number;
   is_sale?: boolean;
   Last_edition?: string;
   shop: Types.ObjectId | IShop;
   userEmail?: string;
-  reviews?: string[];
+  reviews?: IReview[];
 };
 
 export type IBookFilter = {
@@ -157,9 +165,11 @@ export type IBookFilter = {
   genre?: IGenre;
   class_level?: IEducationLevel;
   faculty_name?: IFaculty;
-  price?: string;
   is_sale?: boolean;
   Last_edition?: string;
+  userEmail?: string;
+  minPrice?: number;
+  maxPrice?: number;
 };
 
 export type BookModel = Model<IBook, Record<string, unknown>>;

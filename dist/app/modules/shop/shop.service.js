@@ -44,9 +44,9 @@ const createShop = (shopData) => __awaiter(void 0, void 0, void 0, function* () 
     }
     const isExist = yield shop_model_1.Shop.findOne({ bookShopOwner: shopData.bookShopOwner });
     console.log('isExist', isExist);
-    if (isExist) {
-        throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, 'Shop already Existed !!');
-    }
+    // if (isExist) {
+    //   throw new ApiError(httpStatus.BAD_REQUEST, 'Shop already Existed !!');
+    // }
     let newShopAllData = null;
     const session = yield mongoose_1.default.startSession();
     try {

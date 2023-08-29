@@ -9,13 +9,13 @@ const auth_route_1 = require("../modules/auth/auth.route");
 const shop_route_1 = require("../modules/shop/shop.route");
 const book_router_1 = require("../modules/book/book.router");
 const blog_route_1 = require("../modules/blog/blog.route");
-const imageUpload_route_1 = require("../modules/imageUploader/imageUpload.route");
+// import { ImageRouter } from '../modules/imageUploader/imageUpload.route';
 const routes = express_1.default.Router();
 const moduleRoutes = [
-    {
-        path: '/single-image-upload',
-        route: imageUpload_route_1.ImageRouter,
-    },
+    // {
+    //   path: '/single-image-upload',
+    //   route: ImageRouter,
+    // },
     {
         path: '/users',
         route: user_route_1.UserRoutes,
