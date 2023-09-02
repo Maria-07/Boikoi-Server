@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 // import express from 'express';
 // import uploader from '../../middlewares/uploader';
 // import { ImageUploadController } from './imageUpload.controller';

@@ -20,7 +20,6 @@ export const bookSearchableFields = [
   'genre',
   'class_level',
   'faculty_name',
-  'price',
   'Last_edition',
 ];
 export const oldBookSearchableFields = [

@@ -9,7 +9,7 @@ import { paginationHelpers } from '../../../helpers/paginationHelpers';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import config from '../../../config';
 import { Secret } from 'jsonwebtoken';
-import { IBook, IBookFilter } from './book.interface';
+import { IBook, IBookFilter, IReview } from './book.interface';
 import { Book } from './book.model';
 import { bookSearchableFields } from '../../../constance/searchableFields';
 
@@ -242,10 +242,37 @@ const deleteBook = async (id: string, token: string): Promise<IBook | null> => {
   return result;
 };
 
+//add review
+const AddBookReview = async (
+  bookID: string,
+  review: IReview
+): Promise<void> => {
+  const book = await Book.findById(bookID).lean().exec();
+
+  if (!book) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'book not found');
+  }
+
+  // Make sure book.reviews is defined before pushing the new review
+  if (!book.reviews) {
+    book.reviews = [];
+  }
+
+  // Add the review to the book's reviews array
+  review.date = new Date();
+  book.reviews.push(review);
+
+  // Save the updated book with the new review
+  await Book.findByIdAndUpdate(bookID, {
+    reviews: book.reviews,
+  }).exec();
+};
+
 export const BookService = {
   createBook,
   getAllBook,
   getSingleBook,
   deleteBook,
   updateBook,
+  AddBookReview,
 };

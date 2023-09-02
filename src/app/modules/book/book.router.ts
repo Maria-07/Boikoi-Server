@@ -33,9 +33,9 @@ router.delete(
 );
 
 //* add a review
-router.post('/review/:id', BookController.addReview);
+router.post('/:id/reviews', BookController.AddBookReview);
 
 //* get all review
-router.get('/review/:id', BookController.getAllReview);
+// router.get('/:id/reviews', BookController.getAllReview);
 
 export const BookRoutes = router;

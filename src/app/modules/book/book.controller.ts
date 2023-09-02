@@ -9,7 +9,7 @@ import config from '../../../config';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import ApiError from '../../../errors/ApiError';
 import { bookFilterableFields } from '../../../constance/filterableFields';
-import { IBook } from './book.interface';
+import { IBook, IReview } from './book.interface';
 import { BookService } from './book.service';
 import { Book } from './book.model';
 
@@ -114,7 +114,7 @@ const addReview = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const addReview = req.body.reviews;
 
-  // console.log('new review : ', addReview);
+  console.log('new review : ', addReview);
 
   const result = await Book.updateOne(
     { _id: id },
@@ -128,6 +128,38 @@ const addReview = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+const AddBookReview: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const bookID = req.params.id;
+    const { name, rating, review } = req.body;
+
+    const book = await BookService.getSingleBook(bookID);
+
+    if (!book) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'book not found');
+    }
+
+    // Make sure book.reviews is defined before pushing the new review
+    if (!book.reviews) {
+      book.reviews = [];
+    }
+
+    // Add the review to the book's reviews array
+    const newReview: IReview = { name, rating, review };
+    book.reviews.push(newReview);
+
+    // Save the updated book with the new review
+    await BookService.AddBookReview(bookID, newReview);
+
+    sendResponse<IBook>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Review added successfully!',
+      data: book,
+    });
+  }
+);
 
 //* get reviews
 const getAllReview = catchAsync(async (req: Request, res: Response) => {
@@ -152,4 +184,5 @@ export const BookController = {
   updateBook,
   addReview,
   getAllReview,
+  AddBookReview,
 };

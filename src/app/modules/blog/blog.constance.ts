@@ -3,5 +3,6 @@ export const blogSearchableFields = [
   'title',
   'blog_part',
   'user_name',
+  'email',
 ];
-export const BlogFilterableFields = ['searchTerm', 'title'];
+export const BlogFilterableFields = ['searchTerm', 'title', 'email'];

@@ -23,34 +23,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BookService = void 0;
+exports.OldBookService = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
+const oldBook_modal_1 = require("./oldBook.modal");
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const http_status_1 = __importDefault(require("http-status"));
+const searchableFields_1 = require("../../../constance/searchableFields");
 const paginationHelpers_1 = require("../../../helpers/paginationHelpers");
 const jwtHelpers_1 = require("../../../helpers/jwtHelpers");
 const config_1 = __importDefault(require("../../../config"));
-const book_model_1 = require("./book.model");
-const searchableFields_1 = require("../../../constance/searchableFields");
-// create a Book
-const createBook = (bookData) => __awaiter(void 0, void 0, void 0, function* () {
-    //   const bookBookOwnerDetails = await User.findById(BookData.BookBookOwner);
-    //   console.log(bookBookOwnerDetails);
-    //   if (bookBookOwnerDetails) {
-    //     if (bookBookOwnerDetails.role !== 'bookBookOwner') {
-    //       throw new ApiError(
-    //         httpStatus.NOT_FOUND,
-    //         'This is not a valid bookBookOwner id'
-    //       );
-    //     }
-    //   }
+const user_model_1 = require("../user/user.model");
+//! create an old Book
+const createOldBook = (bookData) => __awaiter(void 0, void 0, void 0, function* () {
     let newBookAllData = null;
     const session = yield mongoose_1.default.startSession();
     try {
         session.startTransaction();
-        const newBook = yield book_model_1.Book.create([bookData], { session });
+        const newBook = yield oldBook_modal_1.OldBook.create([bookData], { session });
         if (!newBook.length) {
-            throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create Book Profile');
+            throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create an Old Book');
         }
         newBookAllData = newBook[0];
         yield session.commitTransaction();
@@ -63,13 +54,13 @@ const createBook = (bookData) => __awaiter(void 0, void 0, void 0, function* () 
     }
     return newBookAllData;
 });
-// get all Books
-const getAllBook = (filters, paginationOption) => __awaiter(void 0, void 0, void 0, function* () {
+//! get all Books
+const getAllOldBook = (filters, paginationOption) => __awaiter(void 0, void 0, void 0, function* () {
     const { searchTerm, maxPrice, minPrice } = filters, filtersData = __rest(filters, ["searchTerm", "maxPrice", "minPrice"]);
     const andCondition = [];
     if (searchTerm) {
         andCondition.push({
-            $or: searchableFields_1.bookSearchableFields.map(field => ({
+            $or: searchableFields_1.oldBookSearchableFields.map(field => ({
                 [field]: {
                     $regex: searchTerm,
                     $options: 'i',
@@ -112,12 +103,12 @@ const getAllBook = (filters, paginationOption) => __awaiter(void 0, void 0, void
         sortConditions[sortBy] = sortOrder;
     }
     const whereCondition = andCondition.length > 0 ? { $and: andCondition } : {};
-    const result = yield book_model_1.Book.find(whereCondition)
-        .populate('shop')
+    const result = yield oldBook_modal_1.OldBook.find(whereCondition)
+        .populate('customer')
         .sort(sortConditions)
         .skip(skip)
         .limit(limit);
-    const total = yield book_model_1.Book.countDocuments(whereCondition);
+    const total = yield oldBook_modal_1.OldBook.countDocuments(whereCondition);
     return {
         meta: {
             page,
@@ -127,13 +118,13 @@ const getAllBook = (filters, paginationOption) => __awaiter(void 0, void 0, void
         data: result,
     };
 });
-// get a single Book
-const getSingleBook = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield book_model_1.Book.findById(id).populate('shop');
+//! get a single Book
+const getSingleOldBook = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield oldBook_modal_1.OldBook.findById(id).populate('customer');
     return result;
 });
-// updated Book
-const updateBook = (id, payload, token) => __awaiter(void 0, void 0, void 0, function* () {
+//! updated Old Book
+const updateOldBook = (id, payload, token) => __awaiter(void 0, void 0, void 0, function* () {
     // console.log(id, payload);
     // console.log('Token => 🔖🔖', token);
     let verifiedToken = null;
@@ -143,33 +134,25 @@ const updateBook = (id, payload, token) => __awaiter(void 0, void 0, void 0, fun
     catch (err) {
         throw new ApiError_1.default(http_status_1.default.FORBIDDEN, 'Invalid Refresh Token');
     }
-    console.log('verifiedToken =======', verifiedToken);
-    //   const { phone, role } = verifiedToken;
-    //   // console.log('PHONE 📞', phone);
-    //   const BookDetails = await Book.findById(id);
+    // console.log('verifiedToken =======', verifiedToken);
+    const { userEmail, role } = verifiedToken;
+    const BookDetails = yield oldBook_modal_1.OldBook.findById(id);
     //   // console.log('BookDetails 🐮', BookDetails);
-    //   if (!BookDetails) {
-    //     throw new ApiError(httpStatus.NOT_FOUND, 'This Book is invalid');
-    //   }
-    //   const bookBookOwnerDetails = await User.findById(BookDetails?.bookBookOwner);
+    if (!BookDetails) {
+        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'This Book is invalid');
+    }
+    const booOwnerDetails = yield user_model_1.User.findById(BookDetails === null || BookDetails === void 0 ? void 0 : BookDetails.customer);
     //   // console.log('👉👉👉👉👉👉bookBookOwnerDetails', bookBookOwnerDetails);
-    //   if (
-    //     bookBookOwnerDetails?.phoneNumber !== phone ||
-    //     bookBookOwnerDetails?.role !== role
-    //   ) {
-    //     throw new ApiError(
-    //       httpStatus.NOT_FOUND,
-    //       'This is not a valid bookBookOwner id for this Book'
-    //     );
-    //   }
-    const result = yield book_model_1.Book.findOneAndUpdate({ _id: id }, payload, {
+    if ((booOwnerDetails === null || booOwnerDetails === void 0 ? void 0 : booOwnerDetails.email) !== userEmail || (booOwnerDetails === null || booOwnerDetails === void 0 ? void 0 : booOwnerDetails.role) !== role) {
+        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'This is not a valid bookBookOwner id for this Book');
+    }
+    const result = yield oldBook_modal_1.OldBook.findOneAndUpdate({ _id: id }, payload, {
         new: true,
-    }).populate('shop');
-    // console.log(result, 'updated result');
+    }).populate('customer');
     return result;
 });
-// Delete Book
-const deleteBook = (id, token) => __awaiter(void 0, void 0, void 0, function* () {
+//! Delete Old Book
+const deleteOldBook = (id, token) => __awaiter(void 0, void 0, void 0, function* () {
     // console.log('Token => 🔖🔖', token);
     let verifiedToken = null;
     try {
@@ -178,52 +161,25 @@ const deleteBook = (id, token) => __awaiter(void 0, void 0, void 0, function* ()
     catch (err) {
         throw new ApiError_1.default(http_status_1.default.FORBIDDEN, 'Invalid Refresh Token');
     }
-    console.log('verifiedToken =======', verifiedToken);
-    //   const { phone, role } = verifiedToken;
-    //   // console.log('PHONE 📞', phone);
-    //   const BookDetails = await Book.findById(id);
+    // console.log('verifiedToken =======', verifiedToken);
+    const { userEmail, role } = verifiedToken;
+    const BookDetails = yield oldBook_modal_1.OldBook.findById(id);
     //   // console.log('BookDetails 🐮', BookDetails);
-    //   if (!BookDetails) {
-    //     throw new ApiError(httpStatus.NOT_FOUND, 'This Book is invalid');
-    //   }
-    //   const bookBookOwnerDetails = await User.findById(BookDetails?.bookBookOwner);
+    if (!BookDetails) {
+        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'This Book is invalid');
+    }
+    const booOwnerDetails = yield user_model_1.User.findById(BookDetails === null || BookDetails === void 0 ? void 0 : BookDetails.customer);
     //   // console.log('👉👉👉👉👉👉bookBookOwnerDetails', bookBookOwnerDetails);
-    //   if (
-    //     bookBookOwnerDetails?.phoneNumber !== phone ||
-    //     bookBookOwnerDetails?.role !== role
-    //   ) {
-    //     throw new ApiError(
-    //       httpStatus.NOT_FOUND,
-    //       'This is not a valid bookBookOwner id for this Book'
-    //     );
-    //   }
-    const result = yield book_model_1.Book.findByIdAndDelete({ _id: id }, { new: true });
-    // console.log('Deleted Result 🗑️🗑️', result);
+    if ((booOwnerDetails === null || booOwnerDetails === void 0 ? void 0 : booOwnerDetails.email) !== userEmail || (booOwnerDetails === null || booOwnerDetails === void 0 ? void 0 : booOwnerDetails.role) !== role) {
+        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'This is not a valid bookBookOwner id for this Book');
+    }
+    const result = yield oldBook_modal_1.OldBook.findByIdAndDelete({ _id: id }, { new: true });
     return result;
 });
-//add review
-const AddBookReview = (bookID, review) => __awaiter(void 0, void 0, void 0, function* () {
-    const book = yield book_model_1.Book.findById(bookID).lean().exec();
-    if (!book) {
-        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'book not found');
-    }
-    // Make sure book.reviews is defined before pushing the new review
-    if (!book.reviews) {
-        book.reviews = [];
-    }
-    // Add the review to the book's reviews array
-    review.date = new Date();
-    book.reviews.push(review);
-    // Save the updated book with the new review
-    yield book_model_1.Book.findByIdAndUpdate(bookID, {
-        reviews: book.reviews,
-    }).exec();
-});
-exports.BookService = {
-    createBook,
-    getAllBook,
-    getSingleBook,
-    deleteBook,
-    updateBook,
-    AddBookReview,
+exports.OldBookService = {
+    createOldBook,
+    getAllOldBook,
+    getSingleOldBook,
+    updateOldBook,
+    deleteOldBook,
 };

@@ -18,6 +18,7 @@ export type IBlog = {
 export type IBlogFilter = {
   searchTerm?: string;
   title?: string;
+  email?: string;
 };
 
 export type BlogModel = Model<IBlog, Record<string, unknown>>;
